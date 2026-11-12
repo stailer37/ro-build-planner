@@ -14,7 +14,6 @@
   --ok-bg: #e4f3e8;
   --warn: #9a6200;
   --grid-line: #ebe8e1;
-  --bar: color-mix(in srgb, var(--accent) 30%, transparent);
   color-scheme: light;
 }
 
@@ -585,7 +584,12 @@ code {
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 10px;
+  gap: 14px;
+}
+
+.skill-results li {
+  display: grid;
+  gap: 2px;
 }
 
 .skill-result-head {
@@ -603,7 +607,16 @@ code {
   color: var(--accent);
 }
 
-/* DPS relative to the best option; the dashed line marks the normal attack. */
+.versus {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.versus.up {
+  color: var(--ok);
+}
+
+/* Long-fight DPS relative to the best option; the dashed line marks the normal attack. */
 .dps-bar {
   position: relative;
   height: 8px;
@@ -625,44 +638,20 @@ code {
   position: absolute;
   inset: 0 auto 0 0;
   border-radius: 4px;
-}
-
-.dps-bar .burst,
-.swatch.burst {
-  background: var(--bar);
-}
-
-.dps-bar .sustained,
-.swatch.sustained {
   background: var(--accent);
 }
 
 .bar-legend {
   display: flex;
-  flex-wrap: wrap;
-  gap: 4px 14px;
-  margin: 12px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.bar-legend li {
-  display: flex;
   align-items: center;
   gap: 6px;
-}
-
-.swatch {
-  width: 14px;
-  height: 8px;
-  border-radius: 2px;
+  margin: 14px 0 0;
 }
 
 .swatch.normal {
   width: 0;
   height: 12px;
   border-left: 2px dashed var(--muted);
-  border-radius: 0;
 }
 
 /* Tabbed cards: character (levels and stats, skills) and weapon and buffs */

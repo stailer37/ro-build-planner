@@ -46,6 +46,7 @@ import { DEFAULT_INPUTS, hashFor, inputsFromHash, type Inputs } from "./share.ts
 const num = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 });
 const sec = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const pct = new Intl.NumberFormat("pt-BR", { style: "percent", maximumFractionDigits: 1 });
+const signedPct = new Intl.NumberFormat("pt-BR", { style: "percent", maximumFractionDigits: 0, signDisplay: "exceptZero" });
 const range = (n: number, from = 0) => Array.from({ length: n - from + 1 }, (_, i) => from + i);
 
 export function App() {
@@ -713,69 +714,85 @@ const UNAVAILABLE_LABELS: Record<SkillUnavailable, string> = {
   berserk: "bloqueada pelo Frenesi",
 };
 
+/** Sustained DPS against the normal attack, as "+4%"; null when they round to the same. */
+function versusNormal(dps: number, normalDps: number): string | null {
+  const diff = normalDps > 0 ? dps / normalDps - 1 : 0;
+  return Math.abs(diff) < 0.005 ? null : signedPct.format(diff);
+}
+
 function SkillResults({ skills, normalDps, sp }: { skills: PlannedSkill[]; normalDps: number; sp: SpStatus }) {
-  // Best DPS first; skills the build cannot use go last.
-  const sorted = [...skills].sort((a, b) => (b.available ? b.dps : -1) - (a.available ? a.dps : -1));
-  const top = Math.max(normalDps, ...sorted.map((s) => (s.available ? s.dps : 0)));
+  // Ranked by long-fight DPS, the number that holds beyond the first seconds; unusable skills last.
+  const sorted = [...skills].sort((a, b) => (b.available ? b.sustain.sustainedDps : -1) - (a.available ? a.sustain.sustainedDps : -1));
+  const top = Math.max(normalDps, ...sorted.map((s) => (s.available ? s.sustain.sustainedDps : 0)));
   const share = (dps: number) => `${top > 0 ? (100 * dps) / top : 0}%`;
   return (
     <Card title="Habilidades ofensivas">
       <p className="muted small">
-        DPS usando a skill sem parar contra um alvo. SP {sp.max}, recupera {sp.regenPerTick} a cada {SP_REGEN_INTERVAL / 1000} s; cada
-        Poção Azul devolve {num.format(sp.bluePotionSp)} SP em média.
+        DPS numa luta longa sem poções: a skill no ritmo que a regeneração paga (SP {sp.max}, +{sp.regenPerTick} a cada{" "}
+        {SP_REGEN_INTERVAL / 1000} s) e ataques normais no resto do tempo.
       </p>
       <ul className="skill-results" style={{ "--normal": share(normalDps) } as CSSProperties}>
-        {sorted.map((s) => (
-          <li key={s.skill} className={s.available ? "" : "muted"}>
-            <div className="skill-result-head">
-              <span>
-                {skillLabel(s.skill)} <span className="muted">nv. {s.level}</span>
-              </span>
-              {s.available ? (
-                <strong className={s.dps > normalDps ? "better" : ""}>{num.format(s.dps)}</strong>
-              ) : (
-                <span className="small">{UNAVAILABLE_LABELS[s.reason]}</span>
-              )}
-            </div>
-            {s.available && (
-              <div className="dps-bar" aria-hidden="true">
-                <span className="burst" style={{ width: share(s.dps) }} />
-                {s.sustain.fullSpDuration !== Infinity && <span className="sustained" style={{ width: share(s.sustain.sustainedDps) }} />}
+        {sorted.map((s) => {
+          if (!s.available) {
+            return (
+              <li key={s.skill} className="muted">
+                <div className="skill-result-head">
+                  <span>
+                    {skillLabel(s.skill)} <span className="muted">nv. {s.level}</span>
+                  </span>
+                  <span className="small">{UNAVAILABLE_LABELS[s.reason]}</span>
+                </div>
+              </li>
+            );
+          }
+          const { sustain } = s;
+          const versus = versusNormal(sustain.sustainedDps, normalDps);
+          const better = sustain.sustainedDps > normalDps && versus !== null;
+          const limited = sustain.fullSpDuration !== Infinity;
+          return (
+            <li key={s.skill}>
+              <div className="skill-result-head">
+                <span>
+                  {skillLabel(s.skill)} <span className="muted">nv. {s.level}</span>
+                </span>
+                <strong className={better ? "better" : ""}>{num.format(sustain.sustainedDps)}</strong>
               </div>
-            )}
-            {s.available && (
+              <div className="dps-bar" aria-hidden="true">
+                <span style={{ width: share(sustain.sustainedDps) }} />
+              </div>
+              <div className="small">
+                <span className={better ? "versus up" : "versus"}>
+                  {versus === null ? "igual ao ataque normal" : `${versus} em relação ao ataque normal`}
+                </span>
+              </div>
+              <div className="small">
+                {s.dps <= normalDps ? (
+                  <>
+                    Usando sem parar: <strong>{num.format(s.dps)}</strong>, abaixo do ataque normal
+                  </>
+                ) : limited ? (
+                  <>
+                    Explosão: <strong>{num.format(s.dps)}</strong> por {num.format(sustain.fullSpDuration)} s com SP cheio, ou sempre com{" "}
+                    {num.format(sustain.bluePotionsPerMinute)} poções azuis/min
+                  </>
+                ) : (
+                  "A regeneração cobre o custo: dá para usar sem parar."
+                )}
+              </div>
               <div className="muted small">
                 {s.damage.min === s.damage.max ? s.damage.min : `${s.damage.min}–${s.damage.max}`}
                 {s.hits > 1 && ` (${s.hits} golpes)`} por uso · a cada {sec.format(s.cycle / 1000)} s · acerto {pct.format(s.hitChance)}
-                {s.sustain.bluePotionsPerMinute > 0 && ` · ${num.format(s.sustain.bluePotionsPerMinute)} poções azuis/min`}
               </div>
-            )}
-            {s.available &&
-              (s.sustain.fullSpDuration === Infinity ? (
-                <div className="small">A regeneração cobre o custo: sustentável indefinidamente.</div>
-              ) : (
-                <div className="small">
-                  SP cheio dura {num.format(s.sustain.fullSpDuration)} s; depois, <strong>{num.format(s.sustain.sustainedDps)}</strong>{" "}
-                  DPS sustentável <span className="muted">({pct.format(s.sustain.sustainedShare)} do tempo na skill)</span>
-                </div>
-              ))}
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ul>
-      <ul className="bar-legend small muted" aria-hidden="true">
-        <li>
-          <span className="swatch burst" /> sem parar
-        </li>
-        <li>
-          <span className="swatch sustained" /> sustentável
-        </li>
-        <li>
-          <span className="swatch normal" /> ataque normal
-        </li>
-      </ul>
+      <p className="bar-legend small muted">
+        <span className="swatch normal" aria-hidden="true" /> ataque normal ({num.format(normalDps)})
+      </p>
       <p className="muted small">
-        DPS em destaque supera o do ataque normal. Poções por minuto cobrem o que a regeneração não paga no uso sem parar. O
-        sustentável alterna a skill, no ritmo que a regeneração paga, com ataques normais, sem poções.
+        Explosão é o DPS usando a skill sem parar, que só se mantém enquanto o SP dura ou tomando poções. Cada Poção Azul devolve{" "}
+        {num.format(sp.bluePotionSp)} SP em média.
       </p>
     </Card>
   );
