@@ -29,4 +29,13 @@ describe("calculate", () => {
     expect(buffed.result.stats.Agi - bare.result.stats.Agi).toBe(12);
     expect(buffed.result.dps).toBeGreaterThan(bare.result.dps);
   });
+
+  it("lists learned offensive skills, marking those the weapon cannot use", () => {
+    const outcome = calculate(DEFAULT_BUILD, DEFAULT_BUFFS, presetTarget(DEFAULT_TARGET_SIZE));
+    if (!outcome.ok) throw new Error("defaults should be valid");
+    const bySkill = Object.fromEntries(outcome.result.skills.map((s) => [s.skill, s]));
+    expect(Object.keys(bySkill)).toEqual(["SM_BASH", "SM_MAGNUM", "KN_PIERCE", "KN_BOWLINGBASH"]);
+    expect(bySkill.KN_PIERCE).toMatchObject({ available: false, reason: "weapon" });
+    expect(bySkill.KN_BOWLINGBASH).toMatchObject({ available: true });
+  });
 });

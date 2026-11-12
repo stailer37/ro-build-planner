@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { validateWeapon, type Weapon } from "./build.ts";
 
-const weapon = (o: Partial<Weapon> = {}): Weapon => ({ type: "2hSword", atk: 160, level: 4, refine: 7, element: "Neutral", ...o });
+const weapon = (o: Partial<Weapon> = {}): Weapon => ({ type: "2hSword", atk: 160, level: 4, refine: 7, weight: 100, element: "Neutral", ...o });
 
 describe("validateWeapon", () => {
   it("accepts a valid weapon", () => {

@@ -22,6 +22,7 @@ import {
   type SelfBuff,
 } from "../core/buffs.ts";
 import { ELEMENTS, SIZES, STAT_NAMES, getJob, targetPresets, type Size } from "../core/data.ts";
+import type { SkillAttackResult } from "../core/offensive.ts";
 import { calculate, type PlanOutcome } from "../core/plan.ts";
 import {
   PLANNER_SKILLS,
@@ -47,6 +48,7 @@ import {
 } from "./labels.ts";
 
 const num = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 });
+const sec = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const pct = new Intl.NumberFormat("pt-BR", { style: "percent", maximumFractionDigits: 1 });
 const range = (n: number, from = 0) => Array.from({ length: n - from + 1 }, (_, i) => from + i);
 
@@ -102,6 +104,7 @@ export function App() {
                   <NumberField label="ATK" value={build.weapon.atk} min={0} onChange={(atk) => setWeapon({ atk })} />
                   <SelectField label="Nível" value={build.weapon.level} options={range(MAX_WEAPON_LEVEL, 1).map((l) => [l, String(l)])} onChange={(level) => setWeapon({ level })} />
                   <SelectField label="Refino" value={build.weapon.refine} options={range(MAX_REFINE).map((r) => [r, `+${r}`])} onChange={(refine) => setWeapon({ refine })} />
+                  <NumberField label="Peso" value={build.weapon.weight} min={0} onChange={(weight) => setWeapon({ weight })} />
                 </>
               )}
               <SelectField label="Elemento" value={build.weapon.element} options={ELEMENTS.map((e) => [e, ELEMENT_LABELS[e]])} onChange={(element) => setWeapon({ element })} />
@@ -368,35 +371,77 @@ function Results({ outcome, size }: { outcome: PlanOutcome; size: Size }) {
   }
   const r = outcome.result;
   return (
-    <Card title="Resultado">
-      <div className="dps">
-        <span className="muted">Dano por segundo</span>
-        <strong>{num.format(r.dps)}</strong>
-        {hp !== undefined && r.dps > 0 && <span className="muted small">≈ {num.format(hp / r.dps)} s para derrotar o alvo médio</span>}
-      </div>
-      <dl className="kv">
-        <dt>ASPD</dt>
-        <dd>
-          {num.format(r.attackSpeed.aspd)} <span className="muted">({num.format(r.attackSpeed.attacksPerSecond)} golpes/s)</span>
-        </dd>
-        <dt>Chance de acerto</dt>
-        <dd>{pct.format(r.hitChance)}</dd>
-        <dt>Chance de crítico</dt>
-        <dd>{pct.format(r.critChance)}</dd>
-        <dt>Dano normal</dt>
-        <dd>
-          {r.normal.min}–{r.normal.max} <span className="muted">(média {num.format(r.normal.mean)})</span>
-        </dd>
-        <dt>Dano crítico</dt>
-        <dd>
-          {r.critical.min}–{r.critical.max} <span className="muted">(média {num.format(r.critical.mean)})</span>
-        </dd>
-        <dt>Média por golpe</dt>
-        <dd>{num.format(r.meanPerAttack)}</dd>
-      </dl>
-      <p className="muted small">
-        Atributos finais: {STAT_NAMES.map((s) => `${STAT_LABELS[s]} ${r.stats[s]}`).join(" · ")}
-      </p>
+    <>
+      <Card title="Ataque normal">
+        <div className="dps">
+          <span className="muted">Dano por segundo</span>
+          <strong>{num.format(r.dps)}</strong>
+          {hp !== undefined && r.dps > 0 && <span className="muted small">≈ {num.format(hp / r.dps)} s para derrotar o alvo médio</span>}
+        </div>
+        <dl className="kv">
+          <dt>ASPD</dt>
+          <dd>
+            {num.format(r.attackSpeed.aspd)} <span className="muted">({num.format(r.attackSpeed.attacksPerSecond)} golpes/s)</span>
+          </dd>
+          <dt>Chance de acerto</dt>
+          <dd>{pct.format(r.hitChance)}</dd>
+          <dt>Chance de crítico</dt>
+          <dd>{pct.format(r.critChance)}</dd>
+          <dt>Dano normal</dt>
+          <dd>
+            {r.normal.min}–{r.normal.max} <span className="muted">(média {num.format(r.normal.mean)})</span>
+          </dd>
+          <dt>Dano crítico</dt>
+          <dd>
+            {r.critical.min}–{r.critical.max} <span className="muted">(média {num.format(r.critical.mean)})</span>
+          </dd>
+          <dt>Média por golpe</dt>
+          <dd>{num.format(r.meanPerAttack)}</dd>
+        </dl>
+        <p className="muted small">
+          Atributos finais: {STAT_NAMES.map((s) => `${STAT_LABELS[s]} ${r.stats[s]}`).join(" · ")}
+        </p>
+      </Card>
+      {r.skills.length > 0 && <SkillResults skills={r.skills} normalDps={r.dps} />}
+    </>
+  );
+}
+
+const UNAVAILABLE_LABELS: Record<Extract<SkillAttackResult, { available: false }>["reason"], string> = {
+  weapon: "arma incompatível",
+  riding: "requer montaria",
+};
+
+function SkillResults({ skills, normalDps }: { skills: SkillAttackResult[]; normalDps: number }) {
+  // Best DPS first; skills the build cannot use go last.
+  const sorted = [...skills].sort((a, b) => (b.available ? b.dps : -1) - (a.available ? a.dps : -1));
+  return (
+    <Card title="Habilidades ofensivas">
+      <p className="muted small">Uso contínuo contra um alvo, sem limite de SP.</p>
+      <ul className="skill-results">
+        {sorted.map((s) => (
+          <li key={s.skill} className={s.available ? "" : "muted"}>
+            <div className="skill-result-head">
+              <span>
+                {skillLabel(s.skill)} <span className="muted">nv. {s.level}</span>
+              </span>
+              {s.available ? (
+                <strong className={s.dps > normalDps ? "better" : ""}>{num.format(s.dps)}</strong>
+              ) : (
+                <span className="small">{UNAVAILABLE_LABELS[s.reason]}</span>
+              )}
+            </div>
+            {s.available && (
+              <div className="muted small">
+                {s.damage.min === s.damage.max ? s.damage.min : `${s.damage.min}–${s.damage.max}`}
+                {s.hits > 1 && ` (${s.hits} golpes)`} por uso · a cada {sec.format(s.cycle / 1000)} s · acerto {pct.format(s.hitChance)} ·{" "}
+                {num.format(s.spPerSecond)} SP/s
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+      <p className="muted small">DPS em destaque supera o do ataque normal.</p>
     </Card>
   );
 }

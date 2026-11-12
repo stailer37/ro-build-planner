@@ -1,9 +1,9 @@
-// Normal attack damage of a player against a monster (rAthena pre-renewal,
-// battle_calc_weapon_attack with skill_id 0 and a single right-hand weapon).
+// Weapon attack damage of a player against a monster (rAthena pre-renewal
+// battle_calc_weapon_attack with a single right-hand weapon), and normal attack DPS.
 
 import { attackSpeed, type AttackSpeed } from "./aspd.ts";
 import { skillLevel, type Build, type Stats, type StatusEffects } from "./build.ts";
-import { attrFix, refine, sizeFix } from "./data.ts";
+import { attrFix, refine, sizeFix, type Element } from "./data.ts";
 import { add, constant, map, max, mean, min, sub, uniform, type Dist } from "./dist.ts";
 import { derivedStatus, totalStats } from "./stats.ts";
 import { targetStatus, type Target } from "./target.ts";
@@ -35,29 +35,48 @@ function refineRow(build: Build) {
   return row;
 }
 
-/** Element modifier in percent for the weapon element against the target. */
-export function elementModifier(build: Build, target: Target): number {
-  const ratio = attrFix[String(target.elementLevel)]?.[build.weapon.element]?.[target.element];
-  if (ratio === undefined) throw new Error(`No attr_fix for ${build.weapon.element} vs ${target.element} ${target.elementLevel}`);
+/** Element modifier in percent for an attack element against the target. */
+export function elementModifier(element: Element, target: Target): number {
+  const ratio = attrFix[String(target.elementLevel)]?.[element]?.[target.element];
+  if (ratio === undefined) throw new Error(`No attr_fix for ${element} vs ${target.element} ${target.elementLevel}`);
   return ratio;
 }
 
-/**
- * Damage distribution of one normal attack that connects.
- * Critical hits use the maximum weapon ATK and ignore DEF and VIT DEF.
- */
-export function normalAttackDamage(
-  build: Build,
-  stats: Stats,
-  effects: StatusEffects,
-  target: Target,
-  critical: boolean,
-): Dist {
+/** How a weapon attack differs from a plain normal attack. */
+export interface AttackSpec {
+  /** Critical hits use the maximum weapon ATK and ignore DEF and VIT DEF. */
+  critical: boolean;
+  /** Skill ratio in percent before Berserk (100 for normal attacks). */
+  skillRatio: number;
+  /** Replaces the weapon ATK roll, size fix and status ATK (Spiral Pierce). */
+  base?: Dist;
+  /** Whether masteries, ATK% and Aura Blade apply (battle_skill_stacks_masteries_vvs). */
+  stacksBonuses: boolean;
+  ignoresDef: boolean;
+  element: Element;
+  /** Hits per use; damage is multiplied by it (DAMAGE_DIV_FIX). */
+  hits: number;
+  /** Aura Blade does not apply to Spiral Pierce in pre-renewal. */
+  auraBlade: boolean;
+}
+
+export function normalAttackSpec(build: Build, critical: boolean): AttackSpec {
+  return {
+    critical,
+    skillRatio: 100,
+    stacksBonuses: true,
+    ignoresDef: critical,
+    element: build.weapon.element,
+    hits: 1,
+    auraBlade: true,
+  };
+}
+
+/** Weapon ATK roll, size fix, status ATK and over-refine (battle_calc_base_damage). */
+export function baseDamage(build: Build, stats: Stats, effects: StatusEffects, target: Target, critical: boolean): Dist {
   const hasWeapon = build.weapon.type !== "Fist";
   const atkMax = (hasWeapon ? build.weapon.atk : 0) + effects.watk;
-  const { bonus: refineAtk, randomBonus: overrefine } = refineRow(build);
-
-  // battle_calc_base_damage: weapon ATK roll, size fix, status ATK, over-refine.
+  const { randomBonus: overrefine } = refineRow(build);
   let dmg: Dist;
   if (critical) {
     dmg = constant(atkMax);
@@ -71,14 +90,26 @@ export function normalAttackDamage(
   const { batk } = derivedStatus(stats, build.baseLevel);
   dmg = map(dmg, (v) => Math.trunc((v * sizeMod) / 100) + batk);
   if (overrefine > 0) dmg = add(dmg, uniform(1, overrefine));
+  return dmg;
+}
 
-  // Skill ratio (Berserk adds 100 even to normal attacks), then battle_attack_sc_bonus ATK%.
-  const skillRatio = 100 + (effects.berserk ? 100 : 0);
-  const atkPercent = 100 + effects.atkPercent;
+/** Damage distribution of one weapon attack or skill use that connects, all hits included. */
+export function weaponAttackDamage(
+  build: Build,
+  stats: Stats,
+  effects: StatusEffects,
+  target: Target,
+  spec: AttackSpec,
+): Dist {
+  let dmg = spec.base ?? baseDamage(build, stats, effects, target, spec.critical);
+
+  // Skill ratio (Berserk adds 100 to every skill and to normal attacks), then battle_attack_sc_bonus ATK%.
+  const skillRatio = spec.skillRatio + (effects.berserk ? 100 : 0);
+  const atkPercent = spec.stacksBonuses ? 100 + effects.atkPercent : 100;
   dmg = map(dmg, (v) => Math.trunc((Math.trunc((v * skillRatio) / 100) * atkPercent) / 100));
 
   // battle_calc_defense_reduction: hard DEF as a percentage, then VIT DEF.
-  if (!critical) {
+  if (!spec.ignoresDef) {
     const def1 = Math.min(target.def, 100);
     const { def2 } = targetStatus(target);
     const spread = Math.trunc(def2 / 20) ** 2;
@@ -87,12 +118,24 @@ export function normalAttackDamage(
   }
 
   // battle_calc_attack_post_defense: refine ATK, floor at 1, masteries and Aura Blade, floor at 1.
-  const flat = masteryBonus(build) + effects.auraBladeAtk;
+  const { bonus: refineAtk } = refineRow(build);
+  const flat = (spec.stacksBonuses ? masteryBonus(build) : 0) + (spec.auraBlade ? effects.auraBladeAtk : 0);
   dmg = map(dmg, (v) => Math.max(Math.max(v + refineAtk, 1) + flat, 1));
 
   // battle_calc_element_damage. Negative ratios heal the target; count them as 0 damage.
-  const ratio = elementModifier(build, target);
-  return map(dmg, (v) => Math.max(Math.trunc((v * ratio) / 100), 0));
+  const ratio = elementModifier(spec.element, target);
+  return map(dmg, (v) => Math.max(Math.trunc((v * ratio) / 100), 0) * spec.hits);
+}
+
+/** Damage distribution of one normal attack that connects. */
+export function normalAttackDamage(
+  build: Build,
+  stats: Stats,
+  effects: StatusEffects,
+  target: Target,
+  critical: boolean,
+): Dist {
+  return weaponAttackDamage(build, stats, effects, target, normalAttackSpec(build, critical));
 }
 
 /** Chance to land a critical hit (is_attack_critical). */
@@ -101,10 +144,14 @@ export function critChance(stats: Stats, baseLevel: number, target: Target): num
   return Math.min(Math.max(cri, 0), 1000) / 1000;
 }
 
-/** Chance for a non-critical attack to hit (is_attack_hitting). */
-export function hitChance(stats: Stats, baseLevel: number, effects: StatusEffects, target: Target): number {
+/**
+ * Chance for a non-critical attack to hit (is_attack_hitting). `skillBonus` is the
+ * skill's percentage increase of the hit rate itself, applied before the cap.
+ */
+export function hitChance(stats: Stats, baseLevel: number, effects: StatusEffects, target: Target, skillBonus = 0): number {
   const hit = derivedStatus(stats, baseLevel).hit + effects.hit;
-  const rate = 80 + hit - targetStatus(target).flee;
+  let rate = 80 + hit - targetStatus(target).flee;
+  rate += Math.trunc((rate * skillBonus) / 100);
   return Math.min(Math.max(rate, MIN_HITRATE), MAX_HITRATE) / 100;
 }
 
@@ -114,7 +161,7 @@ export interface DamageRange {
   mean: number;
 }
 
-const range = (d: Dist): DamageRange => ({ min: min(d), max: max(d), mean: mean(d) });
+export const range = (d: Dist): DamageRange => ({ min: min(d), max: max(d), mean: mean(d) });
 
 export interface NormalAttackResult {
   attackSpeed: AttackSpeed;

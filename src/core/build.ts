@@ -26,6 +26,8 @@ export interface Weapon {
   level: number;
   /** Refine +0..+10; ignored for Fist. */
   refine: number;
+  /** Weight as shown in game (Spiral Pierce damage); ignored for Fist. */
+  weight: number;
   element: Element;
 }
 
@@ -91,6 +93,7 @@ export type WeaponIssue =
   | { code: "weaponAtkOutOfRange"; min: 0 }
   | { code: "weaponLevelOutOfRange"; min: 1; max: number }
   | { code: "refineOutOfRange"; min: 0; max: number }
+  | { code: "weaponWeightOutOfRange"; min: 0 }
   | { code: "unknownElement" };
 
 export function validateWeapon(weapon: Weapon): WeaponIssue[] {
@@ -103,5 +106,6 @@ export function validateWeapon(weapon: Weapon): WeaponIssue[] {
     issues.push({ code: "weaponLevelOutOfRange", min: 1, max: MAX_WEAPON_LEVEL });
   }
   if (!intIn(weapon.refine, 0, MAX_REFINE)) issues.push({ code: "refineOutOfRange", min: 0, max: MAX_REFINE });
+  if (!intIn(weapon.weight, 0, Number.MAX_SAFE_INTEGER)) issues.push({ code: "weaponWeightOutOfRange", min: 0 });
   return issues;
 }

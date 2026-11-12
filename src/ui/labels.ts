@@ -141,6 +141,8 @@ export function issueMessage(issue: PlanIssue): string {
       return `Nível da arma deve estar entre ${issue.min} e ${issue.max}.`;
     case "refineOutOfRange":
       return `Refino deve estar entre +${issue.min} e +${issue.max}.`;
+    case "weaponWeightOutOfRange":
+      return "O peso da arma não pode ser negativo.";
     case "unknownElement":
       return "Elemento da arma desconhecido.";
     case "ridingNotLearned":

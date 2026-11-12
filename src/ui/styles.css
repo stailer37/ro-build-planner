@@ -377,3 +377,26 @@ legend {
 code {
   font-size: 0.8125rem;
 }
+
+.skill-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.skill-result-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.skill-result-head strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.skill-result-head strong.better {
+  color: var(--accent);
+}

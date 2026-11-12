@@ -32,7 +32,7 @@ export const DEFAULT_BUILD: Build = {
     LK_PARRYING: 10,
     LK_TENSIONRELAX: 1,
   },
-  weapon: { type: "2hSword", atk: 180, level: 3, refine: 7, element: "Neutral" },
+  weapon: { type: "2hSword", atk: 180, level: 3, refine: 7, weight: 250, element: "Neutral" },
   riding: false,
 };
 

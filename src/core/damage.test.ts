@@ -8,7 +8,7 @@ import { build, stats, target } from "./testing.ts";
 describe("normalAttackDamage, deterministic case", () => {
   // DEX high enough that the minimum roll equals weapon ATK, no over-refine and no VIT DEF.
   const b = build({
-    weapon: { type: "1hSword", atk: 100, level: 1, refine: 0, element: "Fire" },
+    weapon: { type: "1hSword", atk: 100, level: 1, refine: 0, weight: 100, element: "Fire" },
     skills: { SM_SWORD: 10 },
   });
   const s = stats({ Str: 50, Dex: 100 });
@@ -38,7 +38,7 @@ describe("normalAttackDamage, deterministic case", () => {
 
 describe("normalAttackDamage, random terms", () => {
   const b = build({
-    weapon: { type: "2hSword", atk: 160, level: 4, refine: 7, element: "Neutral" },
+    weapon: { type: "2hSword", atk: 160, level: 4, refine: 7, weight: 100, element: "Neutral" },
     skills: { SM_TWOHAND: 10 },
   });
   const s = stats({ Str: 100, Dex: 50, Luk: 10 }); // batk = 100 + 100 + 10 + 2 = 212
@@ -116,7 +116,7 @@ describe("normalAttack", () => {
   it("combines crit, hit, damage and attack speed into DPS", () => {
     const b = build({
       stats: stats({ Str: 90, Agi: 80, Dex: 40, Luk: 20 }),
-      weapon: { type: "2hSword", atk: 160, level: 4, refine: 7, element: "Neutral" },
+      weapon: { type: "2hSword", atk: 160, level: 4, refine: 7, weight: 100, element: "Neutral" },
       skills: { SM_TWOHAND: 10 },
     });
     const t: Target = presetTarget("Medium");

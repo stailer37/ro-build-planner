@@ -10,7 +10,7 @@ export const build = (o: Partial<Build> = {}): Build => ({
   jobLevel: 70,
   stats: stats(),
   skills: {},
-  weapon: { type: "2hSword", atk: 100, level: 4, refine: 0, element: "Neutral" },
+  weapon: { type: "2hSword", atk: 100, level: 4, refine: 0, weight: 100, element: "Neutral" },
   riding: false,
   ...o,
 });

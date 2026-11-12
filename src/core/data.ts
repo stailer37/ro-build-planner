@@ -45,6 +45,25 @@ export interface SkillData {
   description: string;
   maxLevel: number;
   isQuest: boolean;
+  /** skill_db Element: "Weapon" uses the weapon element. */
+  element: string | null;
+  damageFlags: string[];
+  castTimeFlags: string[];
+  /** Weapon types the skill needs; empty means any, including bare hands. */
+  requiredWeapons: string[];
+  // Per level, index = level - 1.
+  hitCount: number[];
+  /** Cast time in ms before DEX reduction. */
+  castTime: number[];
+  /** After-cast delay in ms. */
+  afterCastActDelay: number[];
+  spCost: number[];
+}
+
+export function getSkillData(name: string): SkillData {
+  const s = skills.find((k) => k.name === name);
+  if (!s) throw new Error(`No skill_db entry for ${name}`);
+  return s;
 }
 
 /** Per-level skill data (skill_db.yml), restricted to the fields the core reads. */
