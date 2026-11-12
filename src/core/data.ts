@@ -4,6 +4,8 @@ import attrFixJson from "../data/attrFix.json";
 import jobsJson from "../data/jobs.json";
 import refineJson from "../data/refine.json";
 import sizeFixJson from "../data/sizeFix.json";
+import skillsJson from "../data/skills.json";
+import skillTreeJson from "../data/skillTree.json";
 import statPointsJson from "../data/statPoints.json";
 import targetPresetsJson from "../data/targetPresets.json";
 
@@ -28,6 +30,25 @@ export const jobs = jobsJson as JobData[];
 
 /** Cumulative status points by base level (index = level - 1), before the transcendent bonus. */
 export const statPoints: readonly number[] = statPointsJson;
+
+export interface SkillTreeEntry {
+  name: string;
+  maxLevel: number;
+  requires: { name: string; level: number }[];
+}
+
+/** Skills each job adds, in job change order (skill_tree.yml). */
+export const skillTree = skillTreeJson as { job: JobName; skills: SkillTreeEntry[] }[];
+
+export interface SkillData {
+  name: string;
+  description: string;
+  maxLevel: number;
+  isQuest: boolean;
+}
+
+/** Per-level skill data (skill_db.yml), restricted to the fields the core reads. */
+export const skills = skillsJson as SkillData[];
 
 /** Damage % by weapon type and target size (size_fix.yml). */
 export const sizeFix = sizeFixJson as Record<string, Record<Size, number>>;
