@@ -1,6 +1,6 @@
 // The build a user edits in the planner, and the status effects derived from buffs.
 
-import type { StatName } from "./data.ts";
+import { ELEMENTS, type Element, type StatName } from "./data.ts";
 
 export type Stats = Record<StatName, number>;
 
@@ -18,6 +18,22 @@ export const WEAPON_TYPES = [
 ] as const;
 export type WeaponType = (typeof WEAPON_TYPES)[number];
 
+export interface Weapon {
+  type: WeaponType;
+  /** Weapon ATK from the item description; ignored for Fist. */
+  atk: number;
+  /** Weapon level 1..4; ignored for Fist. */
+  level: number;
+  /** Refine +0..+10; ignored for Fist. */
+  refine: number;
+  /** Weight as shown in game (Spiral Pierce damage); ignored for Fist. */
+  weight: number;
+  element: Element;
+}
+
+export const MAX_WEAPON_LEVEL = 4;
+export const MAX_REFINE = 10;
+
 export interface Build {
   baseLevel: number;
   jobLevel: number;
@@ -25,7 +41,7 @@ export interface Build {
   stats: Stats;
   /** Learned skill levels by rAthena skill name; absent means 0. */
   skills: Partial<Record<string, number>>;
-  weapon: { type: WeaponType };
+  weapon: Weapon;
   /** Mounted on a Peco Peco (requires KN_RIDING). */
   riding: boolean;
 }
@@ -38,13 +54,30 @@ export interface StatusEffects {
   statBonus: Partial<Stats>;
   /** Largest "quicken" style aspd_rate reduction, per mille (Two-Hand Quicken = 300). */
   quickenRate: number;
-  /** SC_BERSERK: flat 300 aspd_rate reduction. */
+  /** SC_BERSERK: flat 300 aspd_rate reduction and +100% skill ratio (normal attacks included). */
   berserk: boolean;
   /** ASPD potion aspd_rate reduction, per mille (val2 of SC_ASPDPOTION*). */
   potionRate: number;
+  /** Flat weapon ATK (status_calc_watk), e.g. Impositio Manus. */
+  watk: number;
+  /** ATK % added to 100 and applied before DEF (battle_get_atkpercent), e.g. Concentration. */
+  atkPercent: number;
+  /** Flat HIT (status_calc_hit). */
+  hit: number;
+  /** Flat damage added after DEF (SC_AURABLADE). */
+  auraBladeAtk: number;
 }
 
-export const NO_EFFECTS: StatusEffects = { statBonus: {}, quickenRate: 0, berserk: false, potionRate: 0 };
+export const NO_EFFECTS: StatusEffects = {
+  statBonus: {},
+  quickenRate: 0,
+  berserk: false,
+  potionRate: 0,
+  watk: 0,
+  atkPercent: 0,
+  hit: 0,
+  auraBladeAtk: 0,
+};
 
 export const BASE_STAT_MIN = 1;
 /** max_trans_parameter in conf/battle/player.conf. */
@@ -54,4 +87,25 @@ export const MAX_JOB_LEVEL = 70;
 
 export function skillLevel(build: Build, skill: string): number {
   return build.skills[skill] ?? 0;
+}
+
+export type WeaponIssue =
+  | { code: "weaponAtkOutOfRange"; min: 0 }
+  | { code: "weaponLevelOutOfRange"; min: 1; max: number }
+  | { code: "refineOutOfRange"; min: 0; max: number }
+  | { code: "weaponWeightOutOfRange"; min: 0 }
+  | { code: "unknownElement" };
+
+export function validateWeapon(weapon: Weapon): WeaponIssue[] {
+  const issues: WeaponIssue[] = [];
+  const intIn = (v: number, min: number, max: number) => Number.isInteger(v) && v >= min && v <= max;
+  if (!ELEMENTS.includes(weapon.element)) issues.push({ code: "unknownElement" });
+  if (weapon.type === "Fist") return issues;
+  if (!intIn(weapon.atk, 0, Number.MAX_SAFE_INTEGER)) issues.push({ code: "weaponAtkOutOfRange", min: 0 });
+  if (!intIn(weapon.level, 1, MAX_WEAPON_LEVEL)) {
+    issues.push({ code: "weaponLevelOutOfRange", min: 1, max: MAX_WEAPON_LEVEL });
+  }
+  if (!intIn(weapon.refine, 0, MAX_REFINE)) issues.push({ code: "refineOutOfRange", min: 0, max: MAX_REFINE });
+  if (!intIn(weapon.weight, 0, Number.MAX_SAFE_INTEGER)) issues.push({ code: "weaponWeightOutOfRange", min: 0 });
+  return issues;
 }

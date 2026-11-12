@@ -35,13 +35,17 @@ const FILES = [
 ] as const;
 type DbFile = (typeof FILES)[number];
 
+// Files whose db/ base layer has content of its own; the others only import db/pre-re.
+const BASE_FILES = ["size_fix"] as const;
+
 const CACHE_DIR = join(".cache", "rathena", RATHENA_COMMIT);
 const OUT_DIR = join("src", "data");
 
-async function load(file: DbFile): Promise<unknown> {
-  const path = join(CACHE_DIR, `${file}.yml`);
+async function load(file: string, layer: "pre-re" | "base" = "pre-re"): Promise<unknown> {
+  const path = join(CACHE_DIR, layer === "base" ? `base_${file}.yml` : `${file}.yml`);
   if (!existsSync(path)) {
-    const url = `https://raw.githubusercontent.com/rathena/rathena/${RATHENA_COMMIT}/db/pre-re/${file}.yml`;
+    const dir = layer === "base" ? "db" : "db/pre-re";
+    const url = `https://raw.githubusercontent.com/rathena/rathena/${RATHENA_COMMIT}/${dir}/${file}.yml`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`GET ${url} -> ${res.status}`);
     await writeFile(path, await res.text());
@@ -59,6 +63,7 @@ async function main() {
   const db = Object.fromEntries(
     await Promise.all(FILES.map(async (f) => [f, await load(f)] as const)),
   ) as Record<DbFile, unknown>;
+  const baseSizeFix = await load(BASE_FILES[0], "base");
 
   const tree = buildSkillTree(db.skill_tree);
   const skillNames = new Set<string>([
@@ -72,14 +77,14 @@ async function main() {
   await write("statPoints", buildStatPoints(db.statpoint));
   await write("skillTree", tree);
   await write("skills", buildSkills(db.skill_db, skillNames));
-  await write("sizeFix", buildSizeFix(db.size_fix));
+  await write("sizeFix", buildSizeFix(baseSizeFix, db.size_fix));
   await write("attrFix", buildAttrFix(db.attr_fix));
   await write("refine", buildRefine(db.refine));
   await write("targetPresets", presets);
   await write("meta", {
     rathenaCommit: RATHENA_COMMIT,
     ruleset: "pre-re",
-    sourceFiles: FILES.map((f) => `db/pre-re/${f}.yml`),
+    sourceFiles: [...BASE_FILES.map((f) => `db/${f}.yml`), ...FILES.map((f) => `db/pre-re/${f}.yml`)],
     presetFilter: {
       levelRange: PRESET_LEVEL_RANGE,
       excludes: "Boss/Guardian/Battlefield class, MVP, Treasure, Ignore* modes, E_/G_/C?_/MD_/I_ copies",

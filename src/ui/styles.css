@@ -1,0 +1,1333 @@
+:root {
+  --bg: #f6f5f2;
+  --surface: #ffffff;
+  --surface-2: #f0eee9;
+  --text: #1d1c1a;
+  --muted: #6b6862;
+  --border: #dedad2;
+  --accent: #8a3b12;
+  --accent-text: #ffffff;
+  --bad: #b3261e;
+  --bad-bg: #fbe9e7;
+  --notice-bg: #fff4d6;
+  --ok: #2f7d4a;
+  --ok-bg: #e4f3e8;
+  --warn: #9a6200;
+  --grid-line: #ebe8e1;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161514;
+    --surface: #1f1e1c;
+    --surface-2: #2a2826;
+    --text: #ecebe8;
+    --muted: #a19d96;
+    --border: #3a3734;
+    --accent: #e08a5a;
+    --accent-text: #1a0e07;
+    --bad: #f2b8b5;
+    --bad-bg: #3b1d1b;
+    --notice-bg: #3a3218;
+    --ok: #7fcf96;
+    --ok-bg: #1d3325;
+    --warn: #e7b65c;
+    --grid-line: #252321;
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 1rem;
+}
+
+h3 {
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.app {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.header {
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 12px 24px;
+}
+
+.header p {
+  margin: 4px 0 0;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.toolbar button.ghost {
+  padding: 6px 12px;
+}
+
+.toolbar .share {
+  min-width: 13em;
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .toolbar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .toolbar .share {
+    grid-column: 1 / -1;
+    padding: 8px 12px;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Inputs on the left; results in a column that stays on screen and scrolls on its own,
+   so the page is only as tall as the form. */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(340px, 32%, 420px);
+  gap: 16px;
+  align-items: start;
+}
+
+/* Cards sharing a row take the height of the tallest, so side by side they read as one row. */
+.form {
+  display: grid;
+  /* Side by side only when both fit with their tab badges inline. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+
+.side {
+  position: sticky;
+  top: 16px;
+  display: grid;
+  gap: 12px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .side {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  min-width: 0;
+}
+
+.card.wide {
+  grid-column: 1 / -1;
+}
+
+/* Same box as a tab bar with its active tab, so every card's content starts at the same height. */
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin: -4px 0 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-head h2 {
+  margin-bottom: -1px;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--accent);
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.8125rem;
+}
+
+.strong {
+  font-weight: 600;
+}
+
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px 12px;
+  align-items: end;
+}
+
+.field {
+  display: grid;
+  gap: 4px;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+input[type="number"],
+select {
+  width: 100%;
+  min-width: 0;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+}
+
+.fields .check {
+  grid-column: span 2;
+}
+
+.check:has(input:disabled) {
+  color: var(--muted);
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+legend {
+  padding: 0;
+  margin-bottom: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.buffs .fields {
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+}
+
+.buffs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px 32px;
+  align-items: start;
+}
+
+.stats {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.stats th,
+.stats td {
+  padding: 3px 4px;
+}
+
+.stats thead th {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-align: right;
+}
+
+.stats tbody th {
+  text-align: left;
+  width: 3.5em;
+}
+
+/* Stat input between − and + buttons, like the status window in game. */
+.stat-input {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stats .stat-input input {
+  width: 3.5em;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+
+.stat-input input::-webkit-inner-spin-button,
+.stat-input input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.stat-input button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: 600 1rem/1 system-ui, sans-serif;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.stat-input button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.stat-input button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+@container (max-width: 400px) {
+  .stat-input {
+    gap: 2px;
+  }
+
+  .stat-input button {
+    width: 24px;
+    height: 28px;
+  }
+
+  .stats .stat-input input {
+    width: 2.75em;
+    padding-inline: 2px;
+  }
+
+  .character-panel .stats th,
+  .character-panel .stats td {
+    padding-inline: 2px;
+  }
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.badge.ok {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+
+.badge.bad {
+  background: var(--bad-bg);
+  color: var(--bad);
+}
+
+.tag {
+  margin-left: 6px;
+  font-size: 0.6875rem;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  color: var(--muted);
+}
+
+
+.segmented {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.segmented button {
+  border: 0;
+  padding: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.segmented button + button {
+  border-left: 1px solid var(--border);
+}
+
+.segmented button.active {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.kv dt {
+  color: var(--muted);
+}
+
+.kv dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Two label/value pairs per row. */
+.kv-pairs {
+  grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
+}
+
+.kv-pairs dd:nth-of-type(odd) {
+  padding-right: 20px;
+}
+
+.issues {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--bad);
+  font-size: 0.875rem;
+}
+
+.dps {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 12px;
+}
+
+.dps-value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+}
+
+.dps strong {
+  font-size: 2rem;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Change caused by the last edit; the key on the element replays the flash on each change. */
+.delta {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  animation: delta-flash 0.9s ease-out;
+}
+
+.delta.up {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+
+.delta.down {
+  background: var(--bad-bg);
+  color: var(--bad);
+}
+
+@keyframes delta-flash {
+  from {
+    transform: scale(1.25);
+    filter: brightness(1.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .delta {
+    animation: none;
+  }
+}
+
+.results {
+  display: grid;
+  gap: 12px;
+  scroll-margin-top: 16px;
+}
+
+/* Bottom bar with the DPS, only where the results are below the form. */
+.hud {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .app {
+    padding-bottom: 88px;
+  }
+
+  .hud {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 6px 24px rgb(0 0 0 / 0.25);
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .hud strong {
+    font-size: 1.25rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hud.bad {
+    background: var(--bad-bg);
+    color: var(--bad);
+    border-color: var(--bad);
+  }
+
+  .hud-more {
+    margin-left: auto;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+}
+
+code {
+  font-size: 0.8125rem;
+}
+
+.skill-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.skill-results li {
+  display: grid;
+  gap: 2px;
+}
+
+.skill-result-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.skill-result-head strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.skill-result-head strong.better {
+  color: var(--accent);
+}
+
+.versus {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.versus.up {
+  color: var(--ok);
+}
+
+/* Long-fight DPS relative to the best option; the dashed line marks the normal attack. */
+.dps-bar {
+  position: relative;
+  height: 8px;
+  margin: 4px 0 6px;
+  border-radius: 4px;
+  background: var(--surface-2);
+}
+
+.dps-bar::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  left: var(--normal);
+  border-left: 2px dashed var(--muted);
+}
+
+.dps-bar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 4px;
+  background: var(--accent);
+}
+
+.bar-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 14px 0 0;
+}
+
+.swatch.normal {
+  width: 0;
+  height: 12px;
+  border-left: 2px dashed var(--muted);
+}
+
+/* Guide builds: style and goal pickers, then the loaded build's summary and stat reasons. */
+
+.guide-pickers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+}
+
+.guide-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 3 1 300px;
+}
+
+.guide-picker + .guide-picker {
+  flex: 2 1 200px;
+}
+
+.guide-picker .segmented {
+  flex: 1;
+  margin: 0;
+}
+
+.picker-label {
+  width: 4.5em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.guide-info {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.guide-info p,
+.guide-intro {
+  margin: 0;
+}
+
+.guide-intro {
+  margin-top: 12px;
+}
+
+.guide-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-notes summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.stat-notes ul {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+}
+
+.stat-notes li {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 10px;
+  align-items: baseline;
+}
+
+.stat-notes b {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-notes b.changed {
+  background: var(--notice-bg);
+  color: var(--warn);
+}
+
+/* Tabbed cards: character (levels and stats, skills) and weapon and buffs */
+
+.card.character,
+.card:has(> .card-tabs) {
+  container-type: inline-size;
+}
+
+.character-panel {
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) minmax(0, 640px);
+  gap: 16px 32px;
+  align-items: start;
+}
+
+.character-panel .stats {
+  width: 100%;
+  max-width: 540px;
+}
+
+.character-panel .stats thead th:nth-child(2) {
+  text-align: center;
+}
+
+/* Label and input columns keep their content width; the numbers share the rest. */
+.character-panel .stats tbody th,
+.character-panel .stats td:has(.stat-input) {
+  width: 1%;
+}
+
+.character-panel .stats th,
+.character-panel .stats td {
+  padding: 3px 10px;
+}
+
+.character-levels {
+  display: grid;
+  gap: 10px;
+}
+
+.character-levels .points {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.character-levels .points strong {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.character-levels .points.bad,
+.character-levels .points.bad strong {
+  color: var(--bad);
+}
+
+/* Too narrow for levels beside the table: levels become a row above it. */
+@container (max-width: 760px) {
+  .character-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .character-panel .stats {
+    max-width: none;
+  }
+
+  .character-levels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+  }
+}
+
+@container (min-width: 561px) and (max-width: 760px) {
+  .character-levels {
+    grid-template-columns: repeat(2, minmax(0, 140px)) minmax(0, 1fr);
+  }
+
+  .character-levels .check {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .character-levels .points {
+    grid-column: 1 / -1;
+  }
+}
+
+@container (max-width: 560px) {
+  .character-panel .stats th,
+  .character-panel .stats td {
+    padding: 3px 4px;
+  }
+
+  .character-levels .check,
+  .character-levels .points {
+    grid-column: 1 / -1;
+  }
+}
+
+.card-tabs {
+  display: flex;
+  gap: 4px;
+  margin: -4px 0 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: -1px;
+  padding: 8px 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.card-tabs .badge {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Narrow cards: badge under the label, so both tabs fit without cutting the summary. */
+@container (max-width: 420px) {
+  .card-tabs button {
+    flex: 1 1 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 6px 8px 8px;
+  }
+
+  .card-tabs .badge {
+    max-width: 100%;
+  }
+}
+
+.card-tabs button.active {
+  border-bottom-color: var(--accent);
+  color: var(--text);
+}
+
+.card-tabs button:hover {
+  color: var(--text);
+}
+
+
+
+
+button.ghost {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+button.ghost:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+button.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* Skill tree */
+
+.tree {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 280px;
+  grid-template-areas:
+    "tabs canvas detail"
+    "footer footer footer";
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.tree-tabs {
+  grid-area: tabs;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tree-tabs button {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  width: 84px;
+  padding: 8px 4px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.tree-tabs button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.tree-tabs button.active .badge {
+  background: rgb(0 0 0 / 0.18);
+  color: inherit;
+}
+
+.tree-tab-short {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tree-tab-label {
+  font-size: 0.6875rem;
+  text-align: center;
+}
+
+.tree-canvas-scroll {
+  grid-area: canvas;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 26px 26px;
+  padding: 12px 0;
+}
+
+.tree-canvas {
+  position: relative;
+  margin: 0 auto;
+}
+
+.tree-edges {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.tree-edge path {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+  opacity: 0.7;
+}
+
+.tree-edge rect {
+  fill: var(--surface);
+  stroke: var(--muted);
+}
+
+.tree-edge text {
+  font-size: 10px;
+  fill: var(--muted);
+}
+
+.tree-edge.met path {
+  stroke: var(--ok);
+  stroke-dasharray: none;
+  opacity: 1;
+}
+
+.tree-edge.met rect {
+  fill: var(--ok-bg);
+  stroke: var(--ok);
+}
+
+.tree-edge.met text {
+  fill: var(--ok);
+}
+
+.tree-arrow {
+  fill: var(--muted);
+}
+
+.skill-node {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 6px;
+  text-align: center;
+}
+
+.skill-tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  flex: none;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font: 700 1rem/1 system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+/* Glyph in the skill's color once learned, grey before, as in a game's skill window. */
+.skill-glyph {
+  color: var(--muted);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.skill-glyph .f {
+  fill: currentColor;
+  stroke: none;
+}
+
+.skill-tile.learned .skill-glyph {
+  color: var(--c);
+}
+
+/* The guide's colors are tuned for light tiles; lift them on dark ones. */
+@media (prefers-color-scheme: dark) {
+  .skill-tile.learned .skill-glyph {
+    color: color-mix(in srgb, var(--c) 65%, white);
+  }
+}
+
+.skill-tile.offensive {
+  box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.skill-tile.learned {
+  border-color: var(--ok);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.skill-tile.locked {
+  border-style: dashed;
+  opacity: 0.55;
+}
+
+.skill-tile.selected {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.skill-ext {
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--notice-bg);
+  color: var(--warn);
+  font-size: 0.625rem;
+  font-weight: 600;
+}
+
+.skill-ext.met {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+
+.skill-pips {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  bottom: 4px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.skill-pips span {
+  display: block;
+  height: 100%;
+  background: var(--ok);
+}
+
+.skill-name {
+  max-width: 140px;
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
+.skill-name.selected {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.skill-node .tag {
+  margin: 0;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.stepper span {
+  min-width: 42px;
+}
+
+.stepper button {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.stepper button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.skill-detail {
+  grid-area: detail;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+  font-size: 0.875rem;
+}
+
+.skill-detail h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.skill-detail h4 {
+  margin: 0 0 6px;
+  font-size: 0.8125rem;
+}
+
+.skill-detail header p {
+  margin: 4px 0 8px;
+}
+
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.req-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.req-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.req-list li.ok {
+  color: var(--ok);
+}
+
+.req-list li.bad {
+  color: var(--bad);
+}
+
+.level-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.level-table th,
+.level-table td {
+  padding: 3px 6px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+}
+
+.level-table th:first-child,
+.level-table td:first-child {
+  text-align: left;
+}
+
+.level-table th {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.level-table tr.current td {
+  background: var(--ok-bg);
+  color: var(--ok);
+  font-weight: 600;
+}
+
+.tree-footer {
+  grid-area: footer;
+  display: flex;
+  justify-content: flex-end;
+}
+
+@container (max-width: 1040px) {
+  .tree {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "tabs canvas"
+      "detail detail"
+      "footer footer";
+  }
+
+  /* Below the tree there is room for the detail sections side by side. */
+  .skill-detail {
+    display: block;
+    column-width: 260px;
+    column-gap: 28px;
+  }
+
+  .skill-detail > * {
+    break-inside: avoid;
+    margin-bottom: 14px;
+  }
+}
+
+@container (max-width: 560px) {
+  .tree {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "tabs"
+      "canvas"
+      "detail"
+      "footer";
+  }
+
+  .tree-tabs {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .tree-tabs button {
+    flex: 1 0 72px;
+    width: auto;
+  }
+}
