@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { NO_EFFECTS, type Build, type Stats } from "./build.ts";
+import { NO_EFFECTS, type Build, type Stats, type StatusEffects } from "./build.ts";
 import { critChance, hitChance, masteryBonus, normalAttack, normalAttackDamage } from "./damage.ts";
 import { mean } from "./dist.ts";
 import { presetTarget, type Target } from "./target.ts";
@@ -18,14 +18,22 @@ describe("normalAttackDamage, deterministic case", () => {
     // batk = 50 + 5^2 + 100/5 + 1/5 = 95
     // 100 * 75% (1hSword vs Small) = 75; + 95 = 170; * (100 - 50)% = 85
     // + Sword Mastery 40 = 125; Fire vs Water 1 = 50% -> 62
-    expect([...normalAttackDamage(b, s, t, false)]).toEqual([[62, 1]]);
+    expect([...normalAttackDamage(b, s, NO_EFFECTS, t, false)]).toEqual([[62, 1]]);
   });
 
   it("ignores DEF on critical hits", () => {
     // 75 + 95 = 170; + 40 = 210; * 50% = 105
-    expect([...normalAttackDamage(b, s, t, true)]).toEqual([[105, 1]]);
+    expect([...normalAttackDamage(b, s, NO_EFFECTS, t, true)]).toEqual([[105, 1]]);
   });
 
+  it("applies weapon ATK, Berserk ratio and ATK% before DEF, and Aura Blade after", () => {
+    const fx: StatusEffects = { ...NO_EFFECTS, watk: 10, berserk: true, atkPercent: 25, auraBladeAtk: 100 };
+    const s2 = stats({ Str: 50, Dex: 200 }); // batk = 50 + 25 + 40 = 115; minimum roll capped at 110
+    // 110 * 75% = 82; + 115 = 197; * 200% = 394; * 125% = 492; * 50% = 246; + 40 + 100 = 386; * 50% = 193
+    expect([...normalAttackDamage(b, s2, fx, t, false)]).toEqual([[193, 1]]);
+    // 492 + 140 = 632; * 50% = 316
+    expect([...normalAttackDamage(b, s2, fx, t, true)]).toEqual([[316, 1]]);
+  });
 });
 
 describe("normalAttackDamage, random terms", () => {
@@ -54,7 +62,7 @@ describe("normalAttackDamage, random terms", () => {
   }
 
   it("rolls weapon ATK from DEX * (80 + 20 * weapon level)% up to ATK - 1", () => {
-    const d = normalAttackDamage(b, s, t, false);
+    const d = normalAttackDamage(b, s, NO_EFFECTS, t, false);
     // min: 80 * 75% = 60 + 212 + 1 = 273 -> 191 - 43 = 148 + 49 + 40 = 237
     // max: 159 * 75% = 119 + 212 + 39 = 370 -> 259 - 40 = 219 + 49 + 40 = 308
     expect(Math.min(...d.keys())).toBe(237);
@@ -63,7 +71,7 @@ describe("normalAttackDamage, random terms", () => {
   });
 
   it("uses max weapon ATK plus the over-refine roll on criticals", () => {
-    const d = normalAttackDamage(b, s, t, true);
+    const d = normalAttackDamage(b, s, NO_EFFECTS, t, true);
     // 160 * 75% = 120 + 212 + (1..39) + 49 + 40
     expect(Math.min(...d.keys())).toBe(422);
     expect(Math.max(...d.keys())).toBe(460);
@@ -88,11 +96,14 @@ describe("hit and critical chance", () => {
   const s: Stats = stats({ Dex: 50, Luk: 30 });
 
   it("uses 80 + HIT - (target level + AGI), clamped to 5..100", () => {
-    expect(hitChance(s, 99, target({ level: 80, agi: 60 }))).toBeCloseTo(0.89); // 80 + 149 - 140
-    expect(hitChance(s, 99, target({ level: 99, agi: 200 }))).toBeCloseTo(0.05);
-    expect(hitChance(s, 99, target({ level: 1, agi: 1 }))).toBe(1);
+    expect(hitChance(s, 99, NO_EFFECTS, target({ level: 80, agi: 60 }))).toBeCloseTo(0.89); // 80 + 149 - 140
+    expect(hitChance(s, 99, NO_EFFECTS, target({ level: 99, agi: 200 }))).toBeCloseTo(0.05);
+    expect(hitChance(s, 99, NO_EFFECTS, target({ level: 1, agi: 1 }))).toBe(1);
   });
 
+  it("adds HIT from status effects", () => {
+    expect(hitChance(s, 99, { ...NO_EFFECTS, hit: 50 }, target({ level: 80, agi: 150 }))).toBeCloseTo(0.49);
+  });
 
   it("uses CRI - 2 * target LUK in tenths of a percent", () => {
     // CRI = 10 + 30 * 10 / 3 = 110

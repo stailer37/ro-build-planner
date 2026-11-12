@@ -46,9 +46,15 @@ export function elementModifier(build: Build, target: Target): number {
  * Damage distribution of one normal attack that connects.
  * Critical hits use the maximum weapon ATK and ignore DEF and VIT DEF.
  */
-export function normalAttackDamage(build: Build, stats: Stats, target: Target, critical: boolean): Dist {
+export function normalAttackDamage(
+  build: Build,
+  stats: Stats,
+  effects: StatusEffects,
+  target: Target,
+  critical: boolean,
+): Dist {
   const hasWeapon = build.weapon.type !== "Fist";
-  const atkMax = hasWeapon ? build.weapon.atk : 0;
+  const atkMax = (hasWeapon ? build.weapon.atk : 0) + effects.watk;
   const { bonus: refineAtk, randomBonus: overrefine } = refineRow(build);
 
   // battle_calc_base_damage: weapon ATK roll, size fix, status ATK, over-refine.
@@ -66,6 +72,11 @@ export function normalAttackDamage(build: Build, stats: Stats, target: Target, c
   dmg = map(dmg, (v) => Math.trunc((v * sizeMod) / 100) + batk);
   if (overrefine > 0) dmg = add(dmg, uniform(1, overrefine));
 
+  // Skill ratio (Berserk adds 100 even to normal attacks), then battle_attack_sc_bonus ATK%.
+  const skillRatio = 100 + (effects.berserk ? 100 : 0);
+  const atkPercent = 100 + effects.atkPercent;
+  dmg = map(dmg, (v) => Math.trunc((Math.trunc((v * skillRatio) / 100) * atkPercent) / 100));
+
   // battle_calc_defense_reduction: hard DEF as a percentage, then VIT DEF.
   if (!critical) {
     const def1 = Math.min(target.def, 100);
@@ -75,9 +86,9 @@ export function normalAttackDamage(build: Build, stats: Stats, target: Target, c
     dmg = sub(map(dmg, (v) => Math.trunc((v * (100 - def1)) / 100)), vitDef);
   }
 
-  // battle_calc_attack_post_defense: refine ATK, floor at 1, masteries, floor at 1.
-  const mastery = masteryBonus(build);
-  dmg = map(dmg, (v) => Math.max(Math.max(v + refineAtk, 1) + mastery, 1));
+  // battle_calc_attack_post_defense: refine ATK, floor at 1, masteries and Aura Blade, floor at 1.
+  const flat = masteryBonus(build) + effects.auraBladeAtk;
+  dmg = map(dmg, (v) => Math.max(Math.max(v + refineAtk, 1) + flat, 1));
 
   // battle_calc_element_damage. Negative ratios heal the target; count them as 0 damage.
   const ratio = elementModifier(build, target);
@@ -91,8 +102,9 @@ export function critChance(stats: Stats, baseLevel: number, target: Target): num
 }
 
 /** Chance for a non-critical attack to hit (is_attack_hitting). */
-export function hitChance(stats: Stats, baseLevel: number, target: Target): number {
-  const rate = 80 + derivedStatus(stats, baseLevel).hit - targetStatus(target).flee;
+export function hitChance(stats: Stats, baseLevel: number, effects: StatusEffects, target: Target): number {
+  const hit = derivedStatus(stats, baseLevel).hit + effects.hit;
+  const rate = 80 + hit - targetStatus(target).flee;
   return Math.min(Math.max(rate, MIN_HITRATE), MAX_HITRATE) / 100;
 }
 
@@ -120,9 +132,9 @@ export function normalAttack(build: Build, effects: StatusEffects, target: Targe
   const stats = totalStats(build, effects);
   const speed = attackSpeed(build, stats, effects);
   const pCrit = critChance(stats, build.baseLevel, target);
-  const pHit = hitChance(stats, build.baseLevel, target);
-  const normal = range(normalAttackDamage(build, stats, target, false));
-  const critical = range(normalAttackDamage(build, stats, target, true));
+  const pHit = hitChance(stats, build.baseLevel, effects, target);
+  const normal = range(normalAttackDamage(build, stats, effects, target, false));
+  const critical = range(normalAttackDamage(build, stats, effects, target, true));
   const meanPerAttack = pCrit * critical.mean + (1 - pCrit) * pHit * normal.mean;
   return {
     attackSpeed: speed,

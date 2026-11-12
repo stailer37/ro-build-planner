@@ -52,13 +52,30 @@ export interface StatusEffects {
   statBonus: Partial<Stats>;
   /** Largest "quicken" style aspd_rate reduction, per mille (Two-Hand Quicken = 300). */
   quickenRate: number;
-  /** SC_BERSERK: flat 300 aspd_rate reduction. */
+  /** SC_BERSERK: flat 300 aspd_rate reduction and +100% skill ratio (normal attacks included). */
   berserk: boolean;
   /** ASPD potion aspd_rate reduction, per mille (val2 of SC_ASPDPOTION*). */
   potionRate: number;
+  /** Flat weapon ATK (status_calc_watk), e.g. Impositio Manus. */
+  watk: number;
+  /** ATK % added to 100 and applied before DEF (battle_get_atkpercent), e.g. Concentration. */
+  atkPercent: number;
+  /** Flat HIT (status_calc_hit). */
+  hit: number;
+  /** Flat damage added after DEF (SC_AURABLADE). */
+  auraBladeAtk: number;
 }
 
-export const NO_EFFECTS: StatusEffects = { statBonus: {}, quickenRate: 0, berserk: false, potionRate: 0 };
+export const NO_EFFECTS: StatusEffects = {
+  statBonus: {},
+  quickenRate: 0,
+  berserk: false,
+  potionRate: 0,
+  watk: 0,
+  atkPercent: 0,
+  hit: 0,
+  auraBladeAtk: 0,
+};
 
 export const BASE_STAT_MIN = 1;
 /** max_trans_parameter in conf/battle/player.conf. */
