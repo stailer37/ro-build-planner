@@ -40,6 +40,8 @@ describe("job bonus", () => {
   const job: JobData = {
     job: "Lord_Knight",
     baseAspd: {},
+    spIncrease: 300,
+    spFactor: 0,
     bonusStats: [
       { level: 1, stats: { Str: 1 } },
       { level: 3, stats: { Str: 1, Agi: 1 } },

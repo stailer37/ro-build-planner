@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  buildJobs,
   buildRefine,
   buildSizeFix,
   buildSkillTree,
@@ -8,6 +9,17 @@ import {
   levelArray,
   type Mob,
 } from "./transform.ts";
+
+describe("buildJobs", () => {
+  const aspd = { Body: ["Novice_High", "Swordman_High", "Knight", "Lord_Knight"].map((j) => ({ Jobs: { [j]: true }, BaseASPD: { Fist: 400 } })) };
+
+  it("exports SP growth with rAthena defaults for omitted fields", () => {
+    const stats = { Body: [{ Jobs: { Lord_Knight: true }, SpIncrease: 300, BonusStats: [{ Level: 1, Str: 1 }] }] };
+    const jobs = buildJobs(aspd, stats);
+    expect(jobs.find((j) => j.job === "Lord_Knight")).toMatchObject({ spIncrease: 300, spFactor: 0 });
+    expect(jobs.find((j) => j.job === "Knight")).toMatchObject({ spIncrease: 100, spFactor: 0, bonusStats: [] });
+  });
+});
 
 describe("levelArray", () => {
   it("fills a scalar across all levels", () => {

@@ -67,6 +67,11 @@ describe("availability", () => {
     expect(skillAttack(b, NO_EFFECTS, target(), "KN_PIERCE")).toEqual({ available: false, skill: "KN_PIERCE", level: 10, reason: "weapon" });
   });
 
+  it("blocks every skill under Frenzy", () => {
+    const b = build({ skills: { SM_BASH: 10 } });
+    expect(skillAttack(b, { ...NO_EFFECTS, berserk: true }, target(), "SM_BASH")).toMatchObject({ available: false, reason: "berserk" });
+  });
+
   it("requires riding for Brandish Spear", () => {
     const b = spearman({ skills: { KN_BRANDISHSPEAR: 10 } });
     expect(skillAttack(b, NO_EFFECTS, target(), "KN_BRANDISHSPEAR")).toMatchObject({ available: false, reason: "riding" });

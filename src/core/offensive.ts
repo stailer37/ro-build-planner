@@ -82,7 +82,8 @@ export function skillCycle(cast: number, delay: number, amotion: number): number
   return Math.max(cast + delay, amotion + CASTBEGIN_ACT_DELAY);
 }
 
-export type SkillUnavailable = "weapon" | "riding";
+/** Why a skill cannot be used: wrong weapon, not mounted, or Frenzy (NoCast in status.yml). */
+export type SkillUnavailable = "weapon" | "riding" | "berserk";
 
 export interface SkillAttackStats {
   available: true;
@@ -136,6 +137,7 @@ export function skillAttack(build: Build, effects: StatusEffects, target: Target
     return { available: false, skill, level, reason: "weapon" };
   }
   if (def.requiresRiding && !build.riding) return { available: false, skill, level, reason: "riding" };
+  if (effects.berserk) return { available: false, skill, level, reason: "berserk" };
 
   const stats = totalStats(build, effects);
   const spec = attackSpec(build, stats, def, data, level, target);

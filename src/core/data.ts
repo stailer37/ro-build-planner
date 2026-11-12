@@ -24,6 +24,10 @@ export interface JobData {
   job: JobName;
   baseAspd: Partial<Record<string, number>>;
   bonusStats: { level: number; stats: Partial<Record<StatName, number>> }[];
+  /** Base SP growth per base level, in hundredths. */
+  spIncrease: number;
+  /** Base SP added per level times the level, in hundredths. */
+  spFactor: number;
 }
 
 export const jobs = jobsJson as JobData[];

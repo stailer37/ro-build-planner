@@ -38,4 +38,15 @@ describe("calculate", () => {
     expect(bySkill.KN_PIERCE).toMatchObject({ available: false, reason: "weapon" });
     expect(bySkill.KN_BOWLINGBASH).toMatchObject({ available: true });
   });
+
+  it("weighs each skill against SP regen", () => {
+    const outcome = calculate(DEFAULT_BUILD, DEFAULT_BUFFS, presetTarget(DEFAULT_TARGET_SIZE));
+    if (!outcome.ok) throw new Error("defaults should be valid");
+    const { sp, dps: normalDps, skills } = outcome.result;
+    const bash = skills.find((s) => s.skill === "SM_BASH");
+    if (!bash?.available) throw new Error("Bash should be usable");
+    expect(bash.sustain.fullSpDuration).toBeCloseTo(sp.max / (bash.spPerSecond - sp.regenPerSecond));
+    expect(bash.sustain.sustainedDps).toBeGreaterThan(normalDps);
+    expect(bash.sustain.sustainedDps).toBeLessThan(bash.dps);
+  });
 });

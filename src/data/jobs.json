@@ -48,7 +48,9 @@
           "Int": 1
         }
       }
-    ]
+    ],
+    "spIncrease": 100,
+    "spFactor": 0
   },
   {
     "job": "Swordman_High",
@@ -173,7 +175,9 @@
           "Str": 1
         }
       }
-    ]
+    ],
+    "spIncrease": 200,
+    "spFactor": 0
   },
   {
     "job": "Knight",
@@ -370,7 +374,9 @@
           "Dex": 1
         }
       }
-    ]
+    ],
+    "spIncrease": 300,
+    "spFactor": 0
   },
   {
     "job": "Lord_Knight",
@@ -657,6 +663,8 @@
           "Str": 1
         }
       }
-    ]
+    ],
+    "spIncrease": 300,
+    "spFactor": 0
   }
 ]

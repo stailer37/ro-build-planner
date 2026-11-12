@@ -59,6 +59,10 @@ export interface JobData {
   baseAspd: Record<string, number>;
   /** Stat bonus granted at each job level (non-cumulative), indexed by job level. */
   bonusStats: { level: number; stats: Record<string, number> }[];
+  /** Base SP growth per base level, in hundredths (SpIncrease; rAthena default 100). */
+  spIncrease: number;
+  /** Base SP added per level times the level, in hundredths (SpFactor; default 0). */
+  spFactor: number;
 }
 
 function findJobEntry(entries: Yaml[], job: string): Yaml | undefined {
@@ -76,7 +80,16 @@ export function buildJobs(jobAspdDoc: unknown, jobStatsDoc: unknown): JobData[] 
       const { Level, ...rest } = b;
       return { level: Level as number, stats: rest as Record<string, number> };
     });
-    return { job, baseAspd: aspd.BaseASPD as Record<string, number>, bonusStats: bonus };
+    // Explicit BaseSp tables would override the SpIncrease/SpFactor formula; none of the
+    // planner jobs has one, so only the formula inputs are exported.
+    if (stats?.BaseSp) throw new Error(`job_stats has an explicit BaseSp table for ${job}`);
+    return {
+      job,
+      baseAspd: aspd.BaseASPD as Record<string, number>,
+      bonusStats: bonus,
+      spIncrease: (stats?.SpIncrease as number | undefined) ?? 100,
+      spFactor: (stats?.SpFactor as number | undefined) ?? 0,
+    };
   });
 }
 

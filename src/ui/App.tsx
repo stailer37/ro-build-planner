@@ -22,8 +22,9 @@ import {
   type SelfBuff,
 } from "../core/buffs.ts";
 import { ELEMENTS, SIZES, STAT_NAMES, getJob, targetPresets, type Size } from "../core/data.ts";
-import type { SkillAttackResult } from "../core/offensive.ts";
-import { calculate, type PlanOutcome } from "../core/plan.ts";
+import type { SkillUnavailable } from "../core/offensive.ts";
+import { calculate, type PlanOutcome, type PlannedSkill } from "../core/plan.ts";
+import { SP_REGEN_INTERVAL, type SpStatus } from "../core/sp.ts";
 import {
   PLANNER_SKILLS,
   SKILL_STAGES,
@@ -402,22 +403,25 @@ function Results({ outcome, size }: { outcome: PlanOutcome; size: Size }) {
           Atributos finais: {STAT_NAMES.map((s) => `${STAT_LABELS[s]} ${r.stats[s]}`).join(" · ")}
         </p>
       </Card>
-      {r.skills.length > 0 && <SkillResults skills={r.skills} normalDps={r.dps} />}
+      {r.skills.length > 0 && <SkillResults skills={r.skills} normalDps={r.dps} sp={r.sp} />}
     </>
   );
 }
 
-const UNAVAILABLE_LABELS: Record<Extract<SkillAttackResult, { available: false }>["reason"], string> = {
+const UNAVAILABLE_LABELS: Record<SkillUnavailable, string> = {
   weapon: "arma incompatível",
   riding: "requer montaria",
+  berserk: "bloqueada pelo Frenesi",
 };
 
-function SkillResults({ skills, normalDps }: { skills: SkillAttackResult[]; normalDps: number }) {
+function SkillResults({ skills, normalDps, sp }: { skills: PlannedSkill[]; normalDps: number; sp: SpStatus }) {
   // Best DPS first; skills the build cannot use go last.
   const sorted = [...skills].sort((a, b) => (b.available ? b.dps : -1) - (a.available ? a.dps : -1));
   return (
     <Card title="Habilidades ofensivas">
-      <p className="muted small">Uso contínuo contra um alvo, sem limite de SP.</p>
+      <p className="muted small">
+        DPS usando a skill sem parar contra um alvo. SP {sp.max}, recupera {sp.regenPerTick} a cada {SP_REGEN_INTERVAL / 1000} s.
+      </p>
       <ul className="skill-results">
         {sorted.map((s) => (
           <li key={s.skill} className={s.available ? "" : "muted"}>
@@ -438,10 +442,22 @@ function SkillResults({ skills, normalDps }: { skills: SkillAttackResult[]; norm
                 {num.format(s.spPerSecond)} SP/s
               </div>
             )}
+            {s.available &&
+              (s.sustain.fullSpDuration === Infinity ? (
+                <div className="small">A regeneração cobre o custo: sustentável indefinidamente.</div>
+              ) : (
+                <div className="small">
+                  SP cheio dura {num.format(s.sustain.fullSpDuration)} s; depois, <strong>{num.format(s.sustain.sustainedDps)}</strong>{" "}
+                  DPS sustentável <span className="muted">({pct.format(s.sustain.sustainedShare)} do tempo na skill)</span>
+                </div>
+              ))}
           </li>
         ))}
       </ul>
-      <p className="muted small">DPS em destaque supera o do ataque normal.</p>
+      <p className="muted small">
+        DPS em destaque supera o do ataque normal. O sustentável alterna a skill, no ritmo que a regeneração paga, com ataques
+        normais, sem poções.
+      </p>
     </Card>
   );
 }

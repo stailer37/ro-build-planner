@@ -3,7 +3,8 @@
 import { skillLevel, validateWeapon, type Build, type Stats, type StatusEffects, type WeaponIssue } from "./build.ts";
 import { resolveEffects, validateBuffs, type BuffIssue, type Buffs } from "./buffs.ts";
 import { normalAttack, type NormalAttackResult } from "./damage.ts";
-import { learnedSkillAttacks, type SkillAttackResult } from "./offensive.ts";
+import { learnedSkillAttacks, type SkillAttackResult, type SkillAttackStats } from "./offensive.ts";
+import { skillSustain, spStatus, type SkillSustain, type SpStatus } from "./sp.ts";
 import { validateSkills, type SkillIssue } from "./skills.ts";
 import { totalStats, validateStats, type StatIssue } from "./stats.ts";
 import type { Target } from "./target.ts";
@@ -17,11 +18,15 @@ export function validatePlan(build: Build, buffs: Buffs): PlanIssue[] {
   return issues;
 }
 
+/** An offensive skill result; usable ones also say how long SP keeps them up. */
+export type PlannedSkill = (SkillAttackStats & { sustain: SkillSustain }) | Exclude<SkillAttackResult, SkillAttackStats>;
+
 export interface PlanResult extends NormalAttackResult {
   stats: Stats;
   effects: StatusEffects;
+  sp: SpStatus;
   /** Learned offensive skills, in skill tree order. */
-  skills: SkillAttackResult[];
+  skills: PlannedSkill[];
 }
 
 export type PlanOutcome = { ok: true; result: PlanResult } | { ok: false; issues: PlanIssue[] };
@@ -30,13 +35,11 @@ export function calculate(build: Build, buffs: Buffs, target: Target): PlanOutco
   const issues = validatePlan(build, buffs);
   if (issues.length) return { ok: false, issues };
   const effects = resolveEffects(build, buffs);
-  return {
-    ok: true,
-    result: {
-      ...normalAttack(build, effects, target),
-      stats: totalStats(build, effects),
-      effects,
-      skills: learnedSkillAttacks(build, effects, target),
-    },
-  };
+  const stats = totalStats(build, effects);
+  const normal = normalAttack(build, effects, target);
+  const sp = spStatus(stats, build.baseLevel, effects);
+  const skills = learnedSkillAttacks(build, effects, target).map((s) =>
+    s.available ? { ...s, sustain: skillSustain(s.dps, s.spPerSecond, normal.dps, sp) } : s,
+  );
+  return { ok: true, result: { ...normal, stats, effects, sp, skills } };
 }
