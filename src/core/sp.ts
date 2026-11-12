@@ -25,11 +25,29 @@ export function maxSp(baseLevel: number, int: number): number {
   return Math.max(Math.trunc(sp), 1);
 }
 
+/** Blue Potion (item_db_usable.yml): itemheal 0,rand(40,60). */
+const BLUE_POTION_SP = { min: 40, max: 60 };
+
+/**
+ * Average SP from one Blue Potion: the roll is raised by 2% per INT and truncated
+ * (pc_itemheal; Lord Knights have no other SP potion bonus without equipment).
+ */
+export function bluePotionSp(int: number): number {
+  const bonus = 100 + 2 * int;
+  let total = 0;
+  for (let sp = BLUE_POTION_SP.min; sp <= BLUE_POTION_SP.max; sp++) {
+    total += bonus !== 100 ? Math.max(Math.trunc((sp * bonus) / 100), sp) : sp;
+  }
+  return total / (BLUE_POTION_SP.max - BLUE_POTION_SP.min + 1);
+}
+
 export interface SpStatus {
   max: number;
   /** SP recovered every SP_REGEN_INTERVAL while standing; 0 when regen is blocked. */
   regenPerTick: number;
   regenPerSecond: number;
+  /** Average SP restored by one Blue Potion. */
+  bluePotionSp: number;
 }
 
 /** SP pool and standing regen. Attacking does not stop regen; Frenzy (SC_BERSERK) does. */
@@ -38,7 +56,12 @@ export function spStatus(stats: Stats, baseLevel: number, effects: StatusEffects
   let tick = 1 + Math.trunc(stats.Int / 6) + Math.trunc(max / 100);
   if (stats.Int >= 120) tick += Math.trunc((stats.Int - 120) / 2) + 4;
   if (effects.berserk) tick = 0;
-  return { max, regenPerTick: tick, regenPerSecond: (tick * 1000) / SP_REGEN_INTERVAL };
+  return {
+    max,
+    regenPerTick: tick,
+    regenPerSecond: (tick * 1000) / SP_REGEN_INTERVAL,
+    bluePotionSp: bluePotionSp(stats.Int),
+  };
 }
 
 export interface SkillSustain {
@@ -48,6 +71,8 @@ export interface SkillSustain {
   sustainedShare: number;
   /** Long-fight DPS: the skill for its sustainable share, normal attacks the rest of the time. */
   sustainedDps: number;
+  /** Blue Potions per minute that cover what regen does not, for nonstop use; 0 when not needed. */
+  bluePotionsPerMinute: number;
 }
 
 export function skillSustain(skillDps: number, spPerSecond: number, normalDps: number, sp: SpStatus): SkillSustain {
@@ -57,5 +82,6 @@ export function skillSustain(skillDps: number, spPerSecond: number, normalDps: n
     fullSpDuration: deficit > 0 ? sp.max / deficit : Number.POSITIVE_INFINITY,
     sustainedShare: share,
     sustainedDps: share * skillDps + (1 - share) * normalDps,
+    bluePotionsPerMinute: deficit > 0 ? (deficit * 60) / sp.bluePotionSp : 0,
   };
 }

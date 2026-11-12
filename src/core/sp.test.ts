@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { NO_EFFECTS } from "./build.ts";
 import { getJob, type JobData } from "./data.ts";
-import { baseSp, maxSp, skillSustain, spStatus, type SpStatus } from "./sp.ts";
+import { baseSp, bluePotionSp, maxSp, skillSustain, spStatus, type SpStatus } from "./sp.ts";
 import { stats } from "./testing.ts";
 
 describe("baseSp", () => {
@@ -25,7 +25,7 @@ describe("maxSp", () => {
 describe("spStatus", () => {
   it("regenerates 1 + INT/6 + MaxSP/100 every 8 seconds", () => {
     const sp = spStatus(stats({ Int: 13 }), 99, NO_EFFECTS);
-    expect(sp).toEqual({ max: 433, regenPerTick: 7, regenPerSecond: 0.875 });
+    expect(sp).toMatchObject({ max: 433, regenPerTick: 7, regenPerSecond: 0.875 });
   });
 
   it("adds the high INT bonus from 120 INT", () => {
@@ -38,17 +38,34 @@ describe("spStatus", () => {
   });
 });
 
+describe("bluePotionSp", () => {
+  it("averages rand(40,60) without INT", () => {
+    expect(bluePotionSp(0)).toBe(50);
+  });
+
+  it("raises each roll by 2% per INT, truncated", () => {
+    // Sum of trunc(v * 126 / 100) for v = 40..60 is 1313.
+    expect(bluePotionSp(13)).toBeCloseTo(1313 / 21);
+  });
+});
+
 describe("skillSustain", () => {
-  const sp: SpStatus = { max: 400, regenPerTick: 8, regenPerSecond: 1 };
+  const sp: SpStatus = { max: 400, regenPerTick: 8, regenPerSecond: 1, bluePotionSp: 50 };
 
   it("lasts MaxSP / (cost - regen) and mixes in normal attacks for the rest", () => {
     const r = skillSustain(5000, 50, 1000, sp);
     expect(r.fullSpDuration).toBeCloseTo(400 / 49);
     expect(r.sustainedShare).toBeCloseTo(0.02);
     expect(r.sustainedDps).toBeCloseTo(0.02 * 5000 + 0.98 * 1000);
+    expect(r.bluePotionsPerMinute).toBeCloseTo((49 * 60) / 50);
   });
 
   it("keeps the skill up indefinitely when regen covers the cost", () => {
-    expect(skillSustain(800, 0.5, 1000, sp)).toEqual({ fullSpDuration: Infinity, sustainedShare: 1, sustainedDps: 800 });
+    expect(skillSustain(800, 0.5, 1000, sp)).toEqual({
+      fullSpDuration: Infinity,
+      sustainedShare: 1,
+      sustainedDps: 800,
+      bluePotionsPerMinute: 0,
+    });
   });
 });
