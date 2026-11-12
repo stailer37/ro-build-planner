@@ -391,6 +391,11 @@ legend {
   font-variant-numeric: tabular-nums;
 }
 
+.badge.ok {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+
 .badge.bad {
   background: var(--bad-bg);
   color: var(--bad);
@@ -408,7 +413,8 @@ legend {
 
 .segmented {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   border: 1px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
@@ -652,6 +658,97 @@ code {
   width: 0;
   height: 12px;
   border-left: 2px dashed var(--muted);
+}
+
+/* Guide builds: style and goal pickers, then the loaded build's summary and stat reasons. */
+
+.guide-pickers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+}
+
+.guide-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 3 1 300px;
+}
+
+.guide-picker + .guide-picker {
+  flex: 2 1 200px;
+}
+
+.guide-picker .segmented {
+  flex: 1;
+  margin: 0;
+}
+
+.picker-label {
+  width: 4.5em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.guide-info {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.guide-info p,
+.guide-intro {
+  margin: 0;
+}
+
+.guide-intro {
+  margin-top: 12px;
+}
+
+.guide-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-notes summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.stat-notes ul {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+}
+
+.stat-notes li {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 10px;
+  align-items: baseline;
+}
+
+.stat-notes b {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-notes b.changed {
+  background: var(--notice-bg);
+  color: var(--warn);
 }
 
 /* Tabbed cards: character (levels and stats, skills) and weapon and buffs */
@@ -976,6 +1073,32 @@ button.link {
   font: 700 1rem/1 system-ui, sans-serif;
   letter-spacing: 0.02em;
   cursor: pointer;
+}
+
+/* Glyph in the skill's color once learned, grey before, as in a game's skill window. */
+.skill-glyph {
+  color: var(--muted);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.skill-glyph .f {
+  fill: currentColor;
+  stroke: none;
+}
+
+.skill-tile.learned .skill-glyph {
+  color: var(--c);
+}
+
+/* The guide's colors are tuned for light tiles; lift them on dark ones. */
+@media (prefers-color-scheme: dark) {
+  .skill-tile.learned .skill-glyph {
+    color: color-mix(in srgb, var(--c) 65%, white);
+  }
 }
 
 .skill-tile.offensive {

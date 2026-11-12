@@ -29,6 +29,17 @@ import { SKILL_STAGES, availableSkillPoints, spentSkillPoints } from "../core/sk
 import { availableStatPoints, jobBonusStats, spentStatPoints, statPointCost } from "../core/stats.ts";
 import { presetTarget } from "../core/target.ts";
 import meta from "../data/meta.json";
+import {
+  GOAL_LABELS,
+  STYLE_LABELS,
+  applyGuideBuild,
+  findGuideBuild,
+  guideOverlap,
+  matchingGuideBuild,
+  type GuideBuild,
+  type GuideGoal,
+  type GuideStyle,
+} from "./guide.ts";
 import { edit, initHistory, redo, undo } from "./history.ts";
 import { SkillTree } from "./SkillTree.tsx";
 import {
@@ -84,6 +95,7 @@ export function App() {
       </header>
       <main className="layout">
         <div className="form">
+          <GuideCard build={build} onLoad={(g) => setInputs((s) => applyGuideBuild(s, g))} />
           <CharacterCard build={build} buffs={buffs} onChange={setBuild} />
           <EquipCard build={build} buffs={buffs} onWeapon={setWeapon} onBuffs={setBuffs} />
           <TargetCard size={size} onChange={(s) => setInputs((prev) => ({ ...prev, size: s }))} />
@@ -232,9 +244,9 @@ function Hud({ outcome, delta }: { outcome: PlanOutcome; delta: number }) {
   );
 }
 
-function Card({ title, aside, children }: { title: string; aside?: ReactNode; children: ReactNode }) {
+function Card({ title, aside, className, children }: { title: string; aside?: ReactNode; className?: string; children: ReactNode }) {
   return (
-    <section className="card">
+    <section className={className ? `card ${className}` : "card"}>
       <div className="card-head">
         <h2>{title}</h2>
         {aside}
@@ -530,6 +542,97 @@ function TabbedCard<T extends string>({
         {children(tab)}
       </div>
     </section>
+  );
+}
+
+const GUIDE_STYLES = Object.keys(STYLE_LABELS) as GuideStyle[];
+const GUIDE_GOALS = Object.keys(GOAL_LABELS) as GuideGoal[];
+
+/**
+ * Loads a build from the guide by style and goal. While the planner build still is that build, or
+ * keeps its stats or skills, the card shows the guide's summary, weapon and reasons for each stat.
+ */
+function GuideCard({ build, onLoad }: { build: Build; onLoad: (g: GuideBuild) => void }) {
+  const [last, setLast] = useState<GuideBuild>();
+  const match = matchingGuideBuild(build);
+  const overlap = last && guideOverlap(build, last);
+  const shown = match ?? (overlap && (overlap.stats || overlap.skills) ? last : undefined);
+  const load = (style: GuideStyle, goal: GuideGoal) => {
+    const g = findGuideBuild(style, goal);
+    if (!g) return;
+    setLast(g);
+    onLoad(g);
+  };
+  const style = shown?.style ?? "spear";
+  const goal = shown?.goal ?? "mvp";
+  return (
+    <Card title="Builds do guia" className="wide guide">
+      <div className="guide-pickers">
+        <div className="guide-picker">
+          <span className="picker-label">Estilo</span>
+          <div className="segmented" role="group" aria-label="Estilo">
+            {GUIDE_STYLES.map((s) => (
+              <button key={s} type="button" aria-pressed={shown?.style === s} className={shown?.style === s ? "active" : ""} onClick={() => load(s, goal)}>
+                {STYLE_LABELS[s]}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="guide-picker">
+          <span className="picker-label">Objetivo</span>
+          <div className="segmented" role="group" aria-label="Objetivo">
+            {GUIDE_GOALS.map((g) => (
+              <button key={g} type="button" aria-pressed={shown?.goal === g} className={shown?.goal === g ? "active" : ""} onClick={() => load(style, g)}>
+                {GOAL_LABELS[g]}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+      {shown ? (
+        <div className="guide-info">
+          <p className="guide-title">
+            <strong>{shown.title}</strong>
+            {match ? (
+              <span className="badge ok">como no guia</span>
+            ) : (
+              <>
+                <span className="badge">modificada</span>
+                <button type="button" className="ghost" onClick={() => onLoad(shown)}>
+                  Recarregar
+                </button>
+              </>
+            )}
+          </p>
+          <p className="muted small">{shown.summary}</p>
+          <p className="small">
+            <span className="muted">Arma do guia:</span> {shown.weapon}.{" "}
+            <span className="muted">O planner não tem os itens: ajuste ATK, nível e refino na aba Arma.</span>
+          </p>
+          <details className="stat-notes">
+            <summary>Por que esses atributos</summary>
+            <ul>
+              {STAT_NAMES.map((s) => {
+                const same = build.stats[s] === shown.stats[s];
+                return (
+                  <li key={s}>
+                    <b className={same ? "" : "changed"} title={same ? undefined : `Sua build: ${build.stats[s]}`}>
+                      {STAT_LABELS[s]} {shown.stats[s]}
+                    </b>
+                    <span>{shown.statNotes[s]}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </details>
+        </div>
+      ) : (
+        <p className="muted small guide-intro">
+          Builds de Lorde do guia RO Classic Idle, nível 99/70. Escolha um estilo ou um objetivo para carregar atributos, habilidades e
+          buffs; dá para desfazer.
+        </p>
+      )}
+    </Card>
   );
 }
 

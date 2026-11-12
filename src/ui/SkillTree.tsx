@@ -1,6 +1,6 @@
 // Skill allocation as a dependency tree per job, with a detail panel for the selected skill.
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { skillLevel, type Build } from "../core/build.ts";
 import { getSkillData, type JobName } from "../core/data.ts";
 import { OFFENSIVE_SKILLS, skillDamagePercent } from "../core/offensive.ts";
@@ -13,6 +13,7 @@ import {
   type SkillStage,
 } from "../core/skills.ts";
 import { skillLabel } from "./labels.ts";
+import { GLYPHS, ICON_COLORS, SKILL_ICONS } from "./skillIcons.ts";
 import { layoutJobTree, type TreeLayout, type TreeNode } from "./skillTreeLayout.ts";
 
 const TABS: { job: JobName; short: string; label: string; stage: SkillStage }[] = [
@@ -36,6 +37,24 @@ const JUMP_OFFSET = 6;
 
 const OFFENSIVE = new Set(OFFENSIVE_SKILLS.map((s) => s.name));
 const STOPWORDS = new Set(["com", "de", "em", "da", "do", "e"]);
+
+/** The skill's glyph, or initials when it has none. Glyph markup is static, from skillIcons.ts. */
+function SkillIcon({ name }: { name: string }) {
+  const icon = SKILL_ICONS[name];
+  const glyph = icon && GLYPHS[icon[0]];
+  if (!icon || !glyph) return <>{initials(name)}</>;
+  return (
+    <svg
+      className="skill-glyph"
+      viewBox="0 0 24 24"
+      width="28"
+      height="28"
+      aria-hidden="true"
+      style={{ "--c": ICON_COLORS[icon[1]] } as CSSProperties}
+      dangerouslySetInnerHTML={{ __html: glyph }}
+    />
+  );
+}
 
 /** Tile text from the pt-BR name: initials of up to three significant words, or two letters of one. */
 function initials(name: string): string {
@@ -204,7 +223,7 @@ function SkillNode({
   return (
     <div className="skill-node" style={{ left: node.col * COL_W, top: node.row * ROW_H, width: COL_W }}>
       <button type="button" className={classes} onClick={() => onSelect(skill.name)} aria-pressed={selected} aria-label={skillLabel(skill.name)}>
-        {initials(skill.name)}
+        <SkillIcon name={skill.name} />
         {node.external.length > 0 && (
           <span
             className={externalMet ? "skill-ext met" : "skill-ext"}
