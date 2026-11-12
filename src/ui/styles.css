@@ -14,6 +14,7 @@
   --ok-bg: #e4f3e8;
   --warn: #9a6200;
   --grid-line: #ebe8e1;
+  --bar: color-mix(in srgb, var(--accent) 30%, transparent);
   color-scheme: light;
 }
 
@@ -73,31 +74,79 @@ h3 {
 }
 
 .app {
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 24px 16px 48px;
 }
 
 .header {
   margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 12px 24px;
 }
 
 .header p {
   margin: 4px 0 0;
 }
 
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.toolbar button.ghost {
+  padding: 6px 12px;
+}
+
+.toolbar .share {
+  min-width: 13em;
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .toolbar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .toolbar .share {
+    grid-column: 1 / -1;
+    padding: 8px 12px;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Inputs on the left; results in a column that stays on screen and scrolls on its own,
+   so the page is only as tall as the form. */
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-columns: minmax(0, 1fr) clamp(340px, 32%, 420px);
   gap: 16px;
   align-items: start;
 }
 
+/* Cards sharing a row take the height of the tallest, so side by side they read as one row. */
 .form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  /* Side by side only when both fit with their tab badges inline. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
   gap: 16px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .side {
@@ -105,15 +154,22 @@ h3 {
   top: 16px;
   display: grid;
   gap: 12px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 960px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
   }
 
   .side {
     position: static;
+    max-height: none;
+    overflow: visible;
   }
 }
 
@@ -129,12 +185,22 @@ h3 {
   grid-column: 1 / -1;
 }
 
+/* Same box as a tab bar with its active tab, so every card's content starts at the same height. */
 .card-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
+  margin: -4px 0 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-head h2 {
+  margin-bottom: -1px;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--accent);
+  font-size: inherit;
+  line-height: inherit;
 }
 
 .muted {
@@ -217,9 +283,15 @@ legend {
   color: var(--muted);
 }
 
+.buffs .fields {
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+}
+
 .buffs {
   display: grid;
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px 32px;
+  align-items: start;
 }
 
 .stats {
@@ -244,8 +316,70 @@ legend {
   width: 3.5em;
 }
 
-.stats input {
-  width: 4.5em;
+/* Stat input between − and + buttons, like the status window in game. */
+.stat-input {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stats .stat-input input {
+  width: 3.5em;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+
+.stat-input input::-webkit-inner-spin-button,
+.stat-input input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.stat-input button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: 600 1rem/1 system-ui, sans-serif;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.stat-input button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.stat-input button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+@container (max-width: 400px) {
+  .stat-input {
+    gap: 2px;
+  }
+
+  .stat-input button {
+    width: 24px;
+    height: 28px;
+  }
+
+  .stats .stat-input input {
+    width: 2.75em;
+    padding-inline: 2px;
+  }
+
+  .character-panel .stats th,
+  .character-panel .stats td {
+    padding-inline: 2px;
+  }
 }
 
 .badge {
@@ -318,28 +452,13 @@ legend {
   font-variant-numeric: tabular-nums;
 }
 
-.primary {
-  padding: 12px;
-  border: 0;
-  border-radius: 8px;
-  background: var(--accent);
-  color: var(--accent-text);
-  font: inherit;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
+/* Two label/value pairs per row. */
+.kv-pairs {
+  grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
 }
 
-.primary:hover {
-  filter: brightness(1.08);
-}
-
-.notice {
-  margin: 0;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: var(--notice-bg);
-  font-size: 0.8125rem;
+.kv-pairs dd:nth-of-type(odd) {
+  padding-right: 20px;
 }
 
 .issues {
@@ -355,9 +474,106 @@ legend {
   margin-bottom: 12px;
 }
 
+.dps-value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+}
+
 .dps strong {
   font-size: 2rem;
+  line-height: 1.1;
   font-variant-numeric: tabular-nums;
+}
+
+/* Change caused by the last edit; the key on the element replays the flash on each change. */
+.delta {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  animation: delta-flash 0.9s ease-out;
+}
+
+.delta.up {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+
+.delta.down {
+  background: var(--bad-bg);
+  color: var(--bad);
+}
+
+@keyframes delta-flash {
+  from {
+    transform: scale(1.25);
+    filter: brightness(1.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .delta {
+    animation: none;
+  }
+}
+
+.results {
+  display: grid;
+  gap: 12px;
+  scroll-margin-top: 16px;
+}
+
+/* Bottom bar with the DPS, only where the results are below the form. */
+.hud {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .app {
+    padding-bottom: 88px;
+  }
+
+  .hud {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 6px 24px rgb(0 0 0 / 0.25);
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .hud strong {
+    font-size: 1.25rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hud.bad {
+    background: var(--bad-bg);
+    color: var(--bad);
+    border-color: var(--bad);
+  }
+
+  .hud-more {
+    margin-left: auto;
+    color: var(--accent);
+    white-space: nowrap;
+  }
 }
 
 code {
@@ -387,22 +603,95 @@ code {
   color: var(--accent);
 }
 
-/* Character card: tabs for character (levels and stats) and skills */
+/* DPS relative to the best option; the dashed line marks the normal attack. */
+.dps-bar {
+  position: relative;
+  height: 8px;
+  margin: 4px 0 6px;
+  border-radius: 4px;
+  background: var(--surface-2);
+}
 
-.card.character {
+.dps-bar::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  left: var(--normal);
+  border-left: 2px dashed var(--muted);
+}
+
+.dps-bar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 4px;
+}
+
+.dps-bar .burst,
+.swatch.burst {
+  background: var(--bar);
+}
+
+.dps-bar .sustained,
+.swatch.sustained {
+  background: var(--accent);
+}
+
+.bar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bar-legend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 14px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.swatch.normal {
+  width: 0;
+  height: 12px;
+  border-left: 2px dashed var(--muted);
+  border-radius: 0;
+}
+
+/* Tabbed cards: character (levels and stats, skills) and weapon and buffs */
+
+.card.character,
+.card:has(> .card-tabs) {
   container-type: inline-size;
 }
 
 .character-panel {
   display: grid;
-  grid-template-columns: minmax(160px, 200px) minmax(0, 520px);
+  grid-template-columns: minmax(160px, 220px) minmax(0, 640px);
   gap: 16px 32px;
   align-items: start;
 }
 
 .character-panel .stats {
-  width: auto;
-  justify-self: start;
+  width: 100%;
+  max-width: 540px;
+}
+
+.character-panel .stats thead th:nth-child(2) {
+  text-align: center;
+}
+
+/* Label and input columns keep their content width; the numbers share the rest. */
+.character-panel .stats tbody th,
+.character-panel .stats td:has(.stat-input) {
+  width: 1%;
 }
 
 .character-panel .stats th,
@@ -431,22 +720,41 @@ code {
   color: var(--bad);
 }
 
-@container (max-width: 560px) {
+/* Too narrow for levels beside the table: levels become a row above it. */
+@container (max-width: 760px) {
   .character-panel {
     grid-template-columns: minmax(0, 1fr);
   }
 
   .character-panel .stats {
-    width: 100%;
-  }
-
-  .character-panel .stats th,
-  .character-panel .stats td {
-    padding: 3px 4px;
+    max-width: none;
   }
 
   .character-levels {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+  }
+}
+
+@container (min-width: 561px) and (max-width: 760px) {
+  .character-levels {
+    grid-template-columns: repeat(2, minmax(0, 140px)) minmax(0, 1fr);
+  }
+
+  .character-levels .check {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .character-levels .points {
+    grid-column: 1 / -1;
+  }
+}
+
+@container (max-width: 560px) {
+  .character-panel .stats th,
+  .character-panel .stats td {
+    padding: 3px 4px;
   }
 
   .character-levels .check,
@@ -457,7 +765,6 @@ code {
 
 .card-tabs {
   display: flex;
-  flex-wrap: wrap;
   gap: 4px;
   margin: -4px 0 14px;
   border-bottom: 1px solid var(--border);
@@ -475,7 +782,29 @@ code {
   color: var(--muted);
   font: inherit;
   font-weight: 600;
+  white-space: nowrap;
+  min-width: 0;
   cursor: pointer;
+}
+
+.card-tabs .badge {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Narrow cards: badge under the label, so both tabs fit without cutting the summary. */
+@container (max-width: 420px) {
+  .card-tabs button {
+    flex: 1 1 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 6px 8px 8px;
+  }
+
+  .card-tabs .badge {
+    max-width: 100%;
+  }
 }
 
 .card-tabs button.active {
