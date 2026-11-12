@@ -1,0 +1,32 @@
+{
+  "rathenaCommit": "1ca3e7700939ea40120cb51a777f8681ba5e84ae",
+  "ruleset": "pre-re",
+  "sourceFiles": [
+    "db/pre-re/attr_fix.yml",
+    "db/pre-re/job_aspd.yml",
+    "db/pre-re/job_stats.yml",
+    "db/pre-re/mob_db.yml",
+    "db/pre-re/refine.yml",
+    "db/pre-re/size_fix.yml",
+    "db/pre-re/skill_db.yml",
+    "db/pre-re/skill_tree.yml",
+    "db/pre-re/statpoint.yml"
+  ],
+  "presetFilter": {
+    "levelRange": {
+      "Small": {
+        "min": 50,
+        "max": 99
+      },
+      "Medium": {
+        "min": 70,
+        "max": 99
+      },
+      "Large": {
+        "min": 70,
+        "max": 99
+      }
+    },
+    "excludes": "Boss/Guardian/Battlefield class, MVP, Treasure, Ignore* modes, E_/G_/C?_/MD_/I_ copies"
+  }
+}

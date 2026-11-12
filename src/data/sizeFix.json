@@ -1,0 +1,12 @@
+{
+  "Knuckle": {
+    "Small": 100,
+    "Medium": 75,
+    "Large": 50
+  },
+  "Whip": {
+    "Small": 100,
+    "Medium": 100,
+    "Large": 50
+  }
+}

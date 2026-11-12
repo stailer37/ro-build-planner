@@ -1,0 +1,186 @@
+{
+  "1": [
+    {
+      "bonus": 0,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 2,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 4,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 6,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 8,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 10,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 12,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 14,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 16,
+      "randomBonus": 3
+    },
+    {
+      "bonus": 18,
+      "randomBonus": 6
+    },
+    {
+      "bonus": 20,
+      "randomBonus": 9
+    }
+  ],
+  "2": [
+    {
+      "bonus": 0,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 3,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 6,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 9,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 12,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 15,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 18,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 21,
+      "randomBonus": 5
+    },
+    {
+      "bonus": 24,
+      "randomBonus": 10
+    },
+    {
+      "bonus": 27,
+      "randomBonus": 15
+    },
+    {
+      "bonus": 30,
+      "randomBonus": 20
+    }
+  ],
+  "3": [
+    {
+      "bonus": 0,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 5,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 10,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 15,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 20,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 25,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 30,
+      "randomBonus": 8
+    },
+    {
+      "bonus": 35,
+      "randomBonus": 16
+    },
+    {
+      "bonus": 40,
+      "randomBonus": 24
+    },
+    {
+      "bonus": 45,
+      "randomBonus": 32
+    },
+    {
+      "bonus": 50,
+      "randomBonus": 40
+    }
+  ],
+  "4": [
+    {
+      "bonus": 0,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 7,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 14,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 21,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 28,
+      "randomBonus": 0
+    },
+    {
+      "bonus": 35,
+      "randomBonus": 13
+    },
+    {
+      "bonus": 42,
+      "randomBonus": 26
+    },
+    {
+      "bonus": 49,
+      "randomBonus": 39
+    },
+    {
+      "bonus": 56,
+      "randomBonus": 52
+    },
+    {
+      "bonus": 63,
+      "randomBonus": 65
+    },
+    {
+      "bonus": 70,
+      "randomBonus": 78
+    }
+  ]
+}

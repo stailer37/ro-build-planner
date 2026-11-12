@@ -1,0 +1,3088 @@
+[
+  {
+    "id": 1,
+    "name": "NV_BASIC",
+    "description": "Basic Skill",
+    "maxLevel": 9,
+    "type": null,
+    "targetType": null,
+    "hit": null,
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 2,
+    "name": "SM_SWORD",
+    "description": "Sword Mastery",
+    "maxLevel": 10,
+    "type": "Weapon",
+    "targetType": null,
+    "hit": null,
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 3,
+    "name": "SM_TWOHAND",
+    "description": "Two-Handed Sword Mastery",
+    "maxLevel": 10,
+    "type": "Weapon",
+    "targetType": null,
+    "hit": null,
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 4,
+    "name": "SM_RECOVERY",
+    "description": "Increase HP Recovery",
+    "maxLevel": 10,
+    "type": null,
+    "targetType": null,
+    "hit": null,
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 5,
+    "name": "SM_BASH",
+    "description": "Bash",
+    "maxLevel": 10,
+    "type": "Weapon",
+    "targetType": "Attack",
+    "hit": "Single",
+    "element": "Weapon",
+    "isQuest": false,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [
+      "Fist",
+      "Dagger",
+      "1hSword",
+      "2hSword",
+      "1hSpear",
+      "2hSpear",
+      "1hAxe",
+      "2hAxe",
+      "Mace",
+      "2hMace",
+      "Staff",
+      "Knuckle",
+      "Musical",
+      "Whip",
+      "Book",
+      "Katar",
+      "Revolver",
+      "Rifle",
+      "Gatling",
+      "Shotgun",
+      "Grenade",
+      "Huuma"
+    ],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000
+    ],
+    "spCost": [
+      8,
+      8,
+      8,
+      8,
+      8,
+      15,
+      15,
+      15,
+      15,
+      15
+    ]
+  },
+  {
+    "id": 6,
+    "name": "SM_PROVOKE",
+    "description": "Provoke",
+    "maxLevel": 10,
+    "type": null,
+    "targetType": "Attack",
+    "hit": "Single",
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "duration1": [
+      30000,
+      30000,
+      30000,
+      30000,
+      30000,
+      30000,
+      30000,
+      30000,
+      30000,
+      30000
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ]
+  },
+  {
+    "id": 7,
+    "name": "SM_MAGNUM",
+    "description": "Magnum Break",
+    "maxLevel": 10,
+    "type": "Weapon",
+    "targetType": "Self",
+    "hit": "Single",
+    "element": "Fire",
+    "isQuest": false,
+    "damageFlags": [
+      "Splash"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      2000,
+      2000,
+      2000,
+      2000,
+      2000,
+      2000,
+      2000,
+      2000,
+      2000,
+      2000
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000
+    ],
+    "spCost": [
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30,
+      30
+    ]
+  },
+  {
+    "id": 8,
+    "name": "SM_ENDURE",
+    "description": "Endure",
+    "maxLevel": 10,
+    "type": "Weapon",
+    "targetType": "Self",
+    "hit": "Single",
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000
+    ],
+    "duration1": [
+      10000,
+      13000,
+      16000,
+      19000,
+      22000,
+      25000,
+      28000,
+      31000,
+      34000,
+      37000
+    ],
+    "duration2": [
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000
+    ],
+    "spCost": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+    ]
+  },
+  {
+    "id": 29,
+    "name": "AL_INCAGI",
+    "description": "Increase AGI",
+    "maxLevel": 10,
+    "type": "Magic",
+    "targetType": "Support",
+    "hit": "Single",
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "afterCastActDelay": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      60000,
+      80000,
+      100000,
+      120000,
+      140000,
+      160000,
+      180000,
+      200000,
+      220000,
+      240000
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      18,
+      21,
+      24,
+      27,
+      30,
+      33,
+      36,
+      39,
+      42,
+      45
+    ]
+  },
+  {
+    "id": 34,
+    "name": "AL_BLESSING",
+    "description": "Blessing",
+    "maxLevel": 10,
+    "type": "Magic",
+    "targetType": "Support",
+    "hit": "Single",
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      60000,
+      80000,
+      100000,
+      120000,
+      140000,
+      160000,
+      180000,
+      200000,
+      220000,
+      240000
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      28,
+      32,
+      36,
+      40,
+      44,
+      48,
+      52,
+      56,
+      60,
+      64
+    ]
+  },
+  {
+    "id": 55,
+    "name": "KN_SPEARMASTERY",
+    "description": "Spear Mastery",
+    "maxLevel": 10,
+    "type": "Weapon",
+    "targetType": null,
+    "hit": null,
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 56,
+    "name": "KN_PIERCE",
+    "description": "Pierce",
+    "maxLevel": 10,
+    "type": "Weapon",
+    "targetType": "Attack",
+    "hit": "Multi_Hit",
+    "element": "Weapon",
+    "isQuest": false,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [
+      "1hSpear",
+      "2hSpear"
+    ],
+    "hitCount": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+    ]
+  },
+  {
+    "id": 57,
+    "name": "KN_BRANDISHSPEAR",
+    "description": "Brandish Spear",
+    "maxLevel": 10,
+    "type": "Weapon",
+    "targetType": "Attack",
+    "hit": "Single",
+    "element": "Weapon",
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [
+      "1hSpear",
+      "2hSpear"
+    ],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      700,
+      700,
+      700,
+      700,
+      700,
+      700,
+      700,
+      700,
+      700,
+      700
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12
+    ]
+  },
+  {
+    "id": 58,
+    "name": "KN_SPEARSTAB",
+    "description": "Spear Stab",
+    "maxLevel": 10,
+    "type": "Weapon",
+    "targetType": "Attack",
+    "hit": "Single",
+    "element": "Weapon",
+    "isQuest": false,
+    "damageFlags": [
+      "Splash"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [
+      "1hSpear",
+      "2hSpear"
+    ],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9
+    ]
+  },
+  {
+    "id": 59,
+    "name": "KN_SPEARBOOMERANG",
+    "description": "Spear Boomerang",
+    "maxLevel": 5,
+    "type": "Weapon",
+    "targetType": "Attack",
+    "hit": "Single",
+    "element": "Weapon",
+    "isQuest": false,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [
+      "1hSpear",
+      "2hSpear"
+    ],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      10,
+      10,
+      10,
+      10,
+      10
+    ]
+  },
+  {
+    "id": 60,
+    "name": "KN_TWOHANDQUICKEN",
+    "description": "Twohand Quicken",
+    "maxLevel": 10,
+    "type": "Weapon",
+    "targetType": "Self",
+    "hit": "Single",
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [
+      "2hSword"
+    ],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      30000,
+      60000,
+      90000,
+      120000,
+      150000,
+      180000,
+      210000,
+      240000,
+      270000,
+      300000
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      14,
+      18,
+      22,
+      26,
+      30,
+      34,
+      38,
+      42,
+      46,
+      50
+    ]
+  },
+  {
+    "id": 61,
+    "name": "KN_AUTOCOUNTER",
+    "description": "Counter Attack",
+    "maxLevel": 5,
+    "type": "Weapon",
+    "targetType": "Self",
+    "hit": "Single",
+    "element": "Weapon",
+    "isQuest": false,
+    "damageFlags": [
+      "IgnoreDefense",
+      "Critical"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [
+      "Fist",
+      "Dagger",
+      "1hSword",
+      "2hSword",
+      "1hSpear",
+      "2hSpear",
+      "1hAxe",
+      "2hAxe",
+      "Mace",
+      "2hMace",
+      "Staff",
+      "Knuckle",
+      "Musical",
+      "Whip",
+      "Book",
+      "Katar",
+      "Revolver",
+      "Rifle",
+      "Gatling",
+      "Shotgun",
+      "Grenade",
+      "Huuma"
+    ],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      400,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      3,
+      3,
+      3,
+      3,
+      3
+    ]
+  },
+  {
+    "id": 62,
+    "name": "KN_BOWLINGBASH",
+    "description": "Bowling Bash",
+    "maxLevel": 10,
+    "type": "Weapon",
+    "targetType": "Attack",
+    "hit": "Single",
+    "element": "Weapon",
+    "isQuest": false,
+    "damageFlags": [
+      "Splash"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      700,
+      700,
+      700,
+      700,
+      700,
+      700,
+      700,
+      700,
+      700,
+      700
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ]
+  },
+  {
+    "id": 63,
+    "name": "KN_RIDING",
+    "description": "Peco Peco Riding",
+    "maxLevel": 1,
+    "type": "Weapon",
+    "targetType": null,
+    "hit": null,
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1
+    ],
+    "castTime": [
+      0
+    ],
+    "afterCastActDelay": [
+      0
+    ],
+    "afterCastWalkDelay": [
+      0
+    ],
+    "cooldown": [
+      0
+    ],
+    "duration1": [
+      0
+    ],
+    "duration2": [
+      0
+    ],
+    "spCost": [
+      0
+    ]
+  },
+  {
+    "id": 64,
+    "name": "KN_CAVALIERMASTERY",
+    "description": "Cavalier Mastery",
+    "maxLevel": 5,
+    "type": "Weapon",
+    "targetType": null,
+    "hit": null,
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 66,
+    "name": "PR_IMPOSITIO",
+    "description": "Impositio Manus",
+    "maxLevel": 5,
+    "type": "Magic",
+    "targetType": "Support",
+    "hit": "Single",
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      3000,
+      3000,
+      3000,
+      3000,
+      3000
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      60000,
+      60000,
+      60000,
+      60000,
+      60000
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      13,
+      16,
+      19,
+      22,
+      25
+    ]
+  },
+  {
+    "id": 142,
+    "name": "NV_FIRSTAID",
+    "description": "First Aid",
+    "maxLevel": 1,
+    "type": null,
+    "targetType": "Self",
+    "hit": "Single",
+    "element": null,
+    "isQuest": true,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1
+    ],
+    "castTime": [
+      0
+    ],
+    "afterCastActDelay": [
+      0
+    ],
+    "afterCastWalkDelay": [
+      0
+    ],
+    "cooldown": [
+      0
+    ],
+    "duration1": [
+      0
+    ],
+    "duration2": [
+      0
+    ],
+    "spCost": [
+      3
+    ]
+  },
+  {
+    "id": 144,
+    "name": "SM_MOVINGRECOVERY",
+    "description": "Moving HP-Recovery",
+    "maxLevel": 1,
+    "type": null,
+    "targetType": null,
+    "hit": null,
+    "element": null,
+    "isQuest": true,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1
+    ],
+    "castTime": [
+      0
+    ],
+    "afterCastActDelay": [
+      0
+    ],
+    "afterCastWalkDelay": [
+      0
+    ],
+    "cooldown": [
+      0
+    ],
+    "duration1": [
+      0
+    ],
+    "duration2": [
+      0
+    ],
+    "spCost": [
+      0
+    ]
+  },
+  {
+    "id": 145,
+    "name": "SM_FATALBLOW",
+    "description": "Fatal Blow",
+    "maxLevel": 1,
+    "type": "Weapon",
+    "targetType": null,
+    "hit": null,
+    "element": null,
+    "isQuest": true,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1
+    ],
+    "castTime": [
+      0
+    ],
+    "afterCastActDelay": [
+      0
+    ],
+    "afterCastWalkDelay": [
+      0
+    ],
+    "cooldown": [
+      0
+    ],
+    "duration1": [
+      0
+    ],
+    "duration2": [
+      0
+    ],
+    "spCost": [
+      0
+    ]
+  },
+  {
+    "id": 146,
+    "name": "SM_AUTOBERSERK",
+    "description": "Auto Berserk",
+    "maxLevel": 1,
+    "type": "Weapon",
+    "targetType": "Self",
+    "hit": "Single",
+    "element": null,
+    "isQuest": true,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1
+    ],
+    "castTime": [
+      0
+    ],
+    "afterCastActDelay": [
+      0
+    ],
+    "afterCastWalkDelay": [
+      0
+    ],
+    "cooldown": [
+      0
+    ],
+    "duration1": [
+      0
+    ],
+    "duration2": [
+      0
+    ],
+    "spCost": [
+      1
+    ]
+  },
+  {
+    "id": 355,
+    "name": "LK_AURABLADE",
+    "description": "Aura Blade",
+    "maxLevel": 5,
+    "type": "Weapon",
+    "targetType": "Self",
+    "hit": "Single",
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [
+      "Dagger",
+      "1hSword",
+      "2hSword",
+      "1hSpear",
+      "2hSpear",
+      "1hAxe",
+      "2hAxe",
+      "Mace",
+      "2hMace",
+      "Staff",
+      "Bow",
+      "Knuckle",
+      "Musical",
+      "Whip",
+      "Book",
+      "Katar",
+      "Revolver",
+      "Rifle",
+      "Gatling",
+      "Shotgun",
+      "Grenade",
+      "Huuma"
+    ],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      40000,
+      60000,
+      80000,
+      100000,
+      120000
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      18,
+      26,
+      34,
+      42,
+      50
+    ]
+  },
+  {
+    "id": 356,
+    "name": "LK_PARRYING",
+    "description": "Parrying",
+    "maxLevel": 10,
+    "type": "Weapon",
+    "targetType": "Self",
+    "hit": "Single",
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [
+      "2hSword"
+    ],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      15000,
+      20000,
+      25000,
+      30000,
+      35000,
+      40000,
+      45000,
+      50000,
+      55000,
+      60000
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      50,
+      50,
+      50,
+      50,
+      50,
+      50,
+      50,
+      50,
+      50,
+      50
+    ]
+  },
+  {
+    "id": 357,
+    "name": "LK_CONCENTRATION",
+    "description": "Concentration",
+    "maxLevel": 5,
+    "type": "Weapon",
+    "targetType": "Self",
+    "hit": "Single",
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      25000,
+      30000,
+      35000,
+      40000,
+      45000
+    ],
+    "duration2": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spCost": [
+      14,
+      18,
+      22,
+      26,
+      30
+    ]
+  },
+  {
+    "id": 358,
+    "name": "LK_TENSIONRELAX",
+    "description": "Relax",
+    "maxLevel": 1,
+    "type": "Weapon",
+    "targetType": "Self",
+    "hit": "Single",
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1
+    ],
+    "castTime": [
+      0
+    ],
+    "afterCastActDelay": [
+      0
+    ],
+    "afterCastWalkDelay": [
+      0
+    ],
+    "cooldown": [
+      0
+    ],
+    "duration1": [
+      180000
+    ],
+    "duration2": [
+      0
+    ],
+    "spCost": [
+      15
+    ]
+  },
+  {
+    "id": 359,
+    "name": "LK_BERSERK",
+    "description": "Frenzy",
+    "maxLevel": 1,
+    "type": "Weapon",
+    "targetType": "Self",
+    "hit": "Single",
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1
+    ],
+    "castTime": [
+      0
+    ],
+    "afterCastActDelay": [
+      0
+    ],
+    "afterCastWalkDelay": [
+      0
+    ],
+    "cooldown": [
+      0
+    ],
+    "duration1": [
+      300000
+    ],
+    "duration2": [
+      10000
+    ],
+    "spCost": [
+      200
+    ]
+  },
+  {
+    "id": 397,
+    "name": "LK_SPIRALPIERCE",
+    "description": "Spiral Pierce",
+    "maxLevel": 5,
+    "type": "Weapon",
+    "targetType": "Attack",
+    "hit": "Multi_Hit",
+    "element": "Weapon",
+    "isQuest": false,
+    "damageFlags": [
+      "IgnoreDefense"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [
+      "1hSpear",
+      "2hSpear"
+    ],
+    "hitCount": [
+      5,
+      5,
+      5,
+      5,
+      5
+    ],
+    "castTime": [
+      300,
+      500,
+      700,
+      900,
+      1000
+    ],
+    "afterCastActDelay": [
+      1200,
+      1400,
+      1600,
+      1800,
+      2000
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "spCost": [
+      18,
+      21,
+      24,
+      27,
+      30
+    ]
+  },
+  {
+    "id": 398,
+    "name": "LK_HEADCRUSH",
+    "description": "Traumatic Blow",
+    "maxLevel": 5,
+    "type": "Weapon",
+    "targetType": "Attack",
+    "hit": "Single",
+    "element": "Weapon",
+    "isQuest": false,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      500,
+      500,
+      500,
+      500,
+      500
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      120000,
+      120000,
+      120000,
+      120000,
+      120000
+    ],
+    "spCost": [
+      23,
+      23,
+      23,
+      23,
+      23
+    ]
+  },
+  {
+    "id": 399,
+    "name": "LK_JOINTBEAT",
+    "description": "Vital Strike",
+    "maxLevel": 10,
+    "type": "Weapon",
+    "targetType": "Attack",
+    "hit": "Single",
+    "element": "Weapon",
+    "isQuest": false,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [
+      "1hSpear",
+      "2hSpear"
+    ],
+    "hitCount": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "castTime": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "afterCastActDelay": [
+      800,
+      800,
+      800,
+      800,
+      800,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "afterCastWalkDelay": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cooldown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration1": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "duration2": [
+      30000,
+      30000,
+      30000,
+      30000,
+      30000,
+      30000,
+      30000,
+      30000,
+      30000,
+      30000
+    ],
+    "spCost": [
+      12,
+      12,
+      14,
+      14,
+      16,
+      16,
+      18,
+      18,
+      20,
+      20
+    ]
+  },
+  {
+    "id": 410,
+    "name": "WE_CALLBABY",
+    "description": "Call Baby",
+    "maxLevel": 1,
+    "type": null,
+    "targetType": "Self",
+    "hit": "Single",
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [
+      "IgnoreDex"
+    ],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1
+    ],
+    "castTime": [
+      0
+    ],
+    "afterCastActDelay": [
+      0
+    ],
+    "afterCastWalkDelay": [
+      0
+    ],
+    "cooldown": [
+      0
+    ],
+    "duration1": [
+      20000
+    ],
+    "duration2": [
+      0
+    ],
+    "spCost": [
+      1
+    ]
+  },
+  {
+    "id": 495,
+    "name": "KN_ONEHAND",
+    "description": "Onehand Quicken",
+    "maxLevel": 1,
+    "type": "Weapon",
+    "targetType": "Self",
+    "hit": "Single",
+    "element": null,
+    "isQuest": false,
+    "damageFlags": [
+      "NoDamage"
+    ],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [
+      "1hSword"
+    ],
+    "hitCount": [
+      1
+    ],
+    "castTime": [
+      0
+    ],
+    "afterCastActDelay": [
+      0
+    ],
+    "afterCastWalkDelay": [
+      0
+    ],
+    "cooldown": [
+      0
+    ],
+    "duration1": [
+      300000
+    ],
+    "duration2": [
+      0
+    ],
+    "spCost": [
+      100
+    ]
+  },
+  {
+    "id": 1001,
+    "name": "KN_CHARGEATK",
+    "description": "Charge Attack",
+    "maxLevel": 1,
+    "type": "Weapon",
+    "targetType": "Attack",
+    "hit": "Single",
+    "element": "Weapon",
+    "isQuest": true,
+    "damageFlags": [],
+    "castTimeFlags": [],
+    "castDelayFlags": [],
+    "requiredWeapons": [],
+    "hitCount": [
+      1
+    ],
+    "castTime": [
+      500
+    ],
+    "afterCastActDelay": [
+      0
+    ],
+    "afterCastWalkDelay": [
+      0
+    ],
+    "cooldown": [
+      0
+    ],
+    "duration1": [
+      0
+    ],
+    "duration2": [
+      0
+    ],
+    "spCost": [
+      40
+    ]
+  }
+]

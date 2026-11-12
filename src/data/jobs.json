@@ -1,0 +1,662 @@
+[
+  {
+    "job": "Novice_High",
+    "baseAspd": {
+      "Fist": 500,
+      "Dagger": 650,
+      "1hSword": 700,
+      "1hAxe": 800,
+      "Mace": 700,
+      "2hMace": 700,
+      "Staff": 650,
+      "2hStaff": 650
+    },
+    "bonusStats": [
+      {
+        "level": 2,
+        "stats": {
+          "Luk": 1
+        }
+      },
+      {
+        "level": 3,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 5,
+        "stats": {
+          "Agi": 1
+        }
+      },
+      {
+        "level": 6,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 8,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 9,
+        "stats": {
+          "Int": 1
+        }
+      }
+    ]
+  },
+  {
+    "job": "Swordman_High",
+    "baseAspd": {
+      "Fist": 400,
+      "Dagger": 500,
+      "1hSword": 550,
+      "2hSword": 600,
+      "1hSpear": 650,
+      "2hSpear": 700,
+      "1hAxe": 700,
+      "2hAxe": 750,
+      "Mace": 650,
+      "2hMace": 700
+    },
+    "bonusStats": [
+      {
+        "level": 2,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 6,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 10,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 14,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 18,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 22,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 26,
+        "stats": {
+          "Luk": 1
+        }
+      },
+      {
+        "level": 30,
+        "stats": {
+          "Agi": 1
+        }
+      },
+      {
+        "level": 33,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 36,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 38,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 40,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 42,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 44,
+        "stats": {
+          "Luk": 1
+        }
+      },
+      {
+        "level": 46,
+        "stats": {
+          "Agi": 1
+        }
+      },
+      {
+        "level": 47,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 49,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 50,
+        "stats": {
+          "Str": 1
+        }
+      }
+    ]
+  },
+  {
+    "job": "Knight",
+    "baseAspd": {
+      "Fist": 400,
+      "Dagger": 500,
+      "1hSword": 500,
+      "2hSword": 550,
+      "1hSpear": 600,
+      "2hSpear": 600,
+      "1hAxe": 700,
+      "2hAxe": 700,
+      "Mace": 650,
+      "2hMace": 700
+    },
+    "bonusStats": [
+      {
+        "level": 1,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 3,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 4,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 5,
+        "stats": {
+          "Luk": 1
+        }
+      },
+      {
+        "level": 8,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 10,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 11,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 12,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 13,
+        "stats": {
+          "Agi": 1
+        }
+      },
+      {
+        "level": 15,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 17,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 18,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 19,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 20,
+        "stats": {
+          "Luk": 1
+        }
+      },
+      {
+        "level": 21,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 23,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 27,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 28,
+        "stats": {
+          "Luk": 1
+        }
+      },
+      {
+        "level": 29,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 31,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 33,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 36,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 37,
+        "stats": {
+          "Luk": 1
+        }
+      },
+      {
+        "level": 38,
+        "stats": {
+          "Agi": 1
+        }
+      },
+      {
+        "level": 40,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 43,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 46,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 47,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 48,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 49,
+        "stats": {
+          "Dex": 1
+        }
+      }
+    ]
+  },
+  {
+    "job": "Lord_Knight",
+    "baseAspd": {
+      "Fist": 400,
+      "Dagger": 500,
+      "1hSword": 500,
+      "2hSword": 550,
+      "1hSpear": 600,
+      "2hSpear": 600,
+      "1hAxe": 700,
+      "2hAxe": 700,
+      "Mace": 650,
+      "2hMace": 700
+    },
+    "bonusStats": [
+      {
+        "level": 1,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 2,
+        "stats": {
+          "Agi": 1
+        }
+      },
+      {
+        "level": 3,
+        "stats": {
+          "Luk": 1
+        }
+      },
+      {
+        "level": 4,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 5,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 6,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 7,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 8,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 10,
+        "stats": {
+          "Agi": 1
+        }
+      },
+      {
+        "level": 11,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 12,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 13,
+        "stats": {
+          "Int": 1
+        }
+      },
+      {
+        "level": 14,
+        "stats": {
+          "Agi": 1
+        }
+      },
+      {
+        "level": 16,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 17,
+        "stats": {
+          "Agi": 1
+        }
+      },
+      {
+        "level": 19,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 22,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 25,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 27,
+        "stats": {
+          "Luk": 1
+        }
+      },
+      {
+        "level": 28,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 29,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 31,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 33,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 36,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 37,
+        "stats": {
+          "Agi": 1
+        }
+      },
+      {
+        "level": 38,
+        "stats": {
+          "Luk": 1
+        }
+      },
+      {
+        "level": 40,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 41,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 43,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 44,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 46,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 47,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 49,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 52,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 53,
+        "stats": {
+          "Agi": 1
+        }
+      },
+      {
+        "level": 56,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 57,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 58,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 60,
+        "stats": {
+          "Agi": 1
+        }
+      },
+      {
+        "level": 62,
+        "stats": {
+          "Dex": 1
+        }
+      },
+      {
+        "level": 64,
+        "stats": {
+          "Str": 1
+        }
+      },
+      {
+        "level": 65,
+        "stats": {
+          "Agi": 1
+        }
+      },
+      {
+        "level": 67,
+        "stats": {
+          "Int": 1
+        }
+      },
+      {
+        "level": 68,
+        "stats": {
+          "Vit": 1
+        }
+      },
+      {
+        "level": 70,
+        "stats": {
+          "Str": 1
+        }
+      }
+    ]
+  }
+]

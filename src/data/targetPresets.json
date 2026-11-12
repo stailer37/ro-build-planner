@@ -1,0 +1,41 @@
+[
+  {
+    "size": "Small",
+    "sampleSize": 30,
+    "level": 61,
+    "hp": 12542,
+    "def": 30,
+    "vit": 37,
+    "agi": 58,
+    "luk": 45,
+    "race": "Demon",
+    "element": "Dark",
+    "elementLevel": 1
+  },
+  {
+    "size": "Medium",
+    "sampleSize": 54,
+    "level": 79,
+    "hp": 74161,
+    "def": 32,
+    "vit": 48,
+    "agi": 57,
+    "luk": 43,
+    "race": "Formless",
+    "element": "Neutral",
+    "elementLevel": 2
+  },
+  {
+    "size": "Large",
+    "sampleSize": 24,
+    "level": 79,
+    "hp": 211483,
+    "def": 38,
+    "vit": 60,
+    "agi": 63,
+    "luk": 43,
+    "race": "Demihuman",
+    "element": "Dark",
+    "elementLevel": 4
+  }
+]
