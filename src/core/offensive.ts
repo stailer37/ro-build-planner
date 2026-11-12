@@ -42,6 +42,16 @@ export const OFFENSIVE_SKILLS: readonly OffensiveSkillDef[] = [
   { name: "LK_JOINTBEAT", ratio: (lv) => 10 * lv - 50 },
 ];
 
+/**
+ * Skill ratio in percent at a level, before Berserk, for offensive skills whose damage
+ * scales the weapon attack. Undefined otherwise, including Spiral Pierce (weight based).
+ */
+export function skillDamagePercent(skill: string, level: number): number | undefined {
+  const def = OFFENSIVE_SKILLS.find((s) => s.name === skill);
+  if (!def || skill === "LK_SPIRALPIERCE") return undefined;
+  return 100 + def.ratio(level);
+}
+
 /** Brandish Spear against a target in the area nearest the caster (miscflag 0). */
 function brandishRatio(lv: number): number {
   const ratio = 100 + 20 * lv;

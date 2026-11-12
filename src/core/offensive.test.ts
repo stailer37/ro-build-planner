@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { NO_EFFECTS, type Build, type StatusEffects } from "./build.ts";
 import { getSkillData } from "./data.ts";
 import { hitChance } from "./damage.ts";
-import { castTime, skillAttack, skillCycle, spiralPierceBase, type SkillAttackStats } from "./offensive.ts";
+import { castTime, skillAttack, skillCycle, skillDamagePercent, spiralPierceBase, type SkillAttackStats } from "./offensive.ts";
 import { build, stats, target } from "./testing.ts";
 
 // DEX high enough that the weapon roll is fixed at ATK: 2hSpear 100 ATK, batk = 50 + 25 + 40 = 115.
@@ -58,6 +58,15 @@ describe("skill damage", () => {
     const b = spearman();
     const refined = { ...b, weapon: { ...b.weapon, level: 4, refine: 4 } }; // +7 ATK per refine at level 4
     expect(use(refined, "LK_SPIRALPIERCE", 5).damage.mean).toBe((725 + 28) * 5);
+  });
+});
+
+describe("skillDamagePercent", () => {
+  it("returns the skill ratio for weapon-scaled skills only", () => {
+    expect(skillDamagePercent("SM_BASH", 10)).toBe(400);
+    expect(skillDamagePercent("LK_JOINTBEAT", 1)).toBe(60);
+    expect(skillDamagePercent("LK_SPIRALPIERCE", 5)).toBeUndefined();
+    expect(skillDamagePercent("SM_SWORD", 10)).toBeUndefined();
   });
 });
 

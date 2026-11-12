@@ -10,6 +10,10 @@
   --bad: #b3261e;
   --bad-bg: #fbe9e7;
   --notice-bg: #fff4d6;
+  --ok: #2f7d4a;
+  --ok-bg: #e4f3e8;
+  --warn: #9a6200;
+  --grid-line: #ebe8e1;
   color-scheme: light;
 }
 
@@ -26,6 +30,10 @@
     --bad: #f2b8b5;
     --bad-bg: #3b1d1b;
     --notice-bg: #3a3218;
+    --ok: #7fcf96;
+    --ok-bg: #1d3325;
+    --warn: #e7b65c;
+    --grid-line: #252321;
     color-scheme: dark;
   }
 }
@@ -89,6 +97,7 @@ h3 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 16px;
+  align-items: start;
 }
 
 .side {
@@ -185,6 +194,10 @@ button:focus-visible {
   min-height: 34px;
 }
 
+.fields .check {
+  grid-column: span 2;
+}
+
 .check:has(input:disabled) {
   color: var(--muted);
 }
@@ -259,33 +272,6 @@ legend {
   color: var(--muted);
 }
 
-.skill-stages {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-}
-
-.skills {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 4px;
-}
-
-.skills li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.875rem;
-}
-
-.skills select {
-  width: 4.5em;
-  flex: none;
-  padding: 3px 6px;
-}
 
 .segmented {
   display: grid;
@@ -399,4 +385,508 @@ code {
 
 .skill-result-head strong.better {
   color: var(--accent);
+}
+
+/* Character card: tabs for character (levels and stats) and skills */
+
+.card.character {
+  container-type: inline-size;
+}
+
+.character-panel {
+  display: grid;
+  grid-template-columns: minmax(160px, 200px) minmax(0, 520px);
+  gap: 16px 32px;
+  align-items: start;
+}
+
+.character-panel .stats {
+  width: auto;
+  justify-self: start;
+}
+
+.character-panel .stats th,
+.character-panel .stats td {
+  padding: 3px 10px;
+}
+
+.character-levels {
+  display: grid;
+  gap: 10px;
+}
+
+.character-levels .points {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.character-levels .points strong {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.character-levels .points.bad,
+.character-levels .points.bad strong {
+  color: var(--bad);
+}
+
+@container (max-width: 560px) {
+  .character-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .character-panel .stats {
+    width: 100%;
+  }
+
+  .character-panel .stats th,
+  .character-panel .stats td {
+    padding: 3px 4px;
+  }
+
+  .character-levels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .character-levels .check,
+  .character-levels .points {
+    grid-column: 1 / -1;
+  }
+}
+
+.card-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: -4px 0 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: -1px;
+  padding: 8px 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.card-tabs button.active {
+  border-bottom-color: var(--accent);
+  color: var(--text);
+}
+
+.card-tabs button:hover {
+  color: var(--text);
+}
+
+
+
+
+button.ghost {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+button.ghost:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+button.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* Skill tree */
+
+.tree {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 280px;
+  grid-template-areas:
+    "tabs canvas detail"
+    "footer footer footer";
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.tree-tabs {
+  grid-area: tabs;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tree-tabs button {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  width: 84px;
+  padding: 8px 4px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.tree-tabs button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.tree-tabs button.active .badge {
+  background: rgb(0 0 0 / 0.18);
+  color: inherit;
+}
+
+.tree-tab-short {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tree-tab-label {
+  font-size: 0.6875rem;
+  text-align: center;
+}
+
+.tree-canvas-scroll {
+  grid-area: canvas;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 26px 26px;
+  padding: 12px 0;
+}
+
+.tree-canvas {
+  position: relative;
+  margin: 0 auto;
+}
+
+.tree-edges {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.tree-edge path {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+  opacity: 0.7;
+}
+
+.tree-edge rect {
+  fill: var(--surface);
+  stroke: var(--muted);
+}
+
+.tree-edge text {
+  font-size: 10px;
+  fill: var(--muted);
+}
+
+.tree-edge.met path {
+  stroke: var(--ok);
+  stroke-dasharray: none;
+  opacity: 1;
+}
+
+.tree-edge.met rect {
+  fill: var(--ok-bg);
+  stroke: var(--ok);
+}
+
+.tree-edge.met text {
+  fill: var(--ok);
+}
+
+.tree-arrow {
+  fill: var(--muted);
+}
+
+.skill-node {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 6px;
+  text-align: center;
+}
+
+.skill-tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  flex: none;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font: 700 1rem/1 system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.skill-tile.offensive {
+  box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.skill-tile.learned {
+  border-color: var(--ok);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.skill-tile.locked {
+  border-style: dashed;
+  opacity: 0.55;
+}
+
+.skill-tile.selected {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.skill-ext {
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--notice-bg);
+  color: var(--warn);
+  font-size: 0.625rem;
+  font-weight: 600;
+}
+
+.skill-ext.met {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+
+.skill-pips {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  bottom: 4px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.skill-pips span {
+  display: block;
+  height: 100%;
+  background: var(--ok);
+}
+
+.skill-name {
+  max-width: 140px;
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
+.skill-name.selected {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.skill-node .tag {
+  margin: 0;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.stepper span {
+  min-width: 42px;
+}
+
+.stepper button {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.stepper button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.skill-detail {
+  grid-area: detail;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+  font-size: 0.875rem;
+}
+
+.skill-detail h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.skill-detail h4 {
+  margin: 0 0 6px;
+  font-size: 0.8125rem;
+}
+
+.skill-detail header p {
+  margin: 4px 0 8px;
+}
+
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.req-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.req-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.req-list li.ok {
+  color: var(--ok);
+}
+
+.req-list li.bad {
+  color: var(--bad);
+}
+
+.level-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.level-table th,
+.level-table td {
+  padding: 3px 6px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+}
+
+.level-table th:first-child,
+.level-table td:first-child {
+  text-align: left;
+}
+
+.level-table th {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.level-table tr.current td {
+  background: var(--ok-bg);
+  color: var(--ok);
+  font-weight: 600;
+}
+
+.tree-footer {
+  grid-area: footer;
+  display: flex;
+  justify-content: flex-end;
+}
+
+@container (max-width: 1040px) {
+  .tree {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "tabs canvas"
+      "detail detail"
+      "footer footer";
+  }
+
+  /* Below the tree there is room for the detail sections side by side. */
+  .skill-detail {
+    display: block;
+    column-width: 260px;
+    column-gap: 28px;
+  }
+
+  .skill-detail > * {
+    break-inside: avoid;
+    margin-bottom: 14px;
+  }
+}
+
+@container (max-width: 560px) {
+  .tree {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "tabs"
+      "canvas"
+      "detail"
+      "footer";
+  }
+
+  .tree-tabs {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .tree-tabs button {
+    flex: 1 0 72px;
+    width: auto;
+  }
 }

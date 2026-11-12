@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useId, useMemo, useState, type ReactNode } from "react";
 import {
   MAX_BASE_LEVEL,
   MAX_JOB_LEVEL,
@@ -25,23 +25,17 @@ import { ELEMENTS, SIZES, STAT_NAMES, getJob, targetPresets, type Size } from ".
 import type { SkillUnavailable } from "../core/offensive.ts";
 import { calculate, type PlanOutcome, type PlannedSkill } from "../core/plan.ts";
 import { SP_REGEN_INTERVAL, type SpStatus } from "../core/sp.ts";
-import {
-  PLANNER_SKILLS,
-  SKILL_STAGES,
-  availableSkillPoints,
-  setSkillLevel,
-  spentSkillPoints,
-} from "../core/skills.ts";
+import { SKILL_STAGES, availableSkillPoints, spentSkillPoints } from "../core/skills.ts";
 import { availableStatPoints, jobBonusStats, spentStatPoints, statPointCost } from "../core/stats.ts";
 import { presetTarget } from "../core/target.ts";
 import meta from "../data/meta.json";
 import { DEFAULT_BUFFS, DEFAULT_BUILD, DEFAULT_TARGET_SIZE } from "./defaults.ts";
+import { SkillTree } from "./SkillTree.tsx";
 import {
   ELEMENT_LABELS,
   POTION_LABELS,
   RACE_LABELS,
   SIZE_LABELS,
-  STAGE_LABELS,
   STAT_LABELS,
   WEAPON_LABELS,
   issueMessage,
@@ -81,22 +75,7 @@ export function App() {
       </header>
       <main className="layout">
         <div className="form">
-          <Card title="Personagem">
-            <div className="fields">
-              <NumberField label="Nível de base" value={build.baseLevel} min={1} max={MAX_BASE_LEVEL} onChange={(v) => setBuild({ baseLevel: v })} />
-              <NumberField label="Nível de classe" value={build.jobLevel} min={1} max={MAX_JOB_LEVEL} onChange={(v) => setBuild({ jobLevel: v })} />
-              <label className="check">
-                <input
-                  type="checkbox"
-                  checked={build.riding}
-                  disabled={!build.riding && skillLevel(build, "KN_RIDING") === 0}
-                  onChange={(e) => setBuild({ riding: e.target.checked })}
-                />
-                Montado no Peco Peco
-              </label>
-            </div>
-          </Card>
-          <StatsCard build={build} buffs={buffs} onChange={(stats) => setBuild({ stats })} />
+          <CharacterCard build={build} buffs={buffs} onChange={setBuild} />
           <Card title="Arma">
             <div className="fields">
               <SelectField label="Tipo" value={build.weapon.type} options={WEAPON_TYPES.map((t) => [t, WEAPON_LABELS[t]])} onChange={(type) => setWeapon({ type })} />
@@ -112,7 +91,6 @@ export function App() {
             </div>
           </Card>
           <BuffsCard build={build} buffs={buffs} onChange={setBuffs} />
-          <SkillsCard build={build} onChange={(skills) => setBuild({ skills })} />
         </div>
         <aside className="side">
           <TargetCard size={size} onChange={(s) => setInputs((prev) => ({ ...prev, size: s }))} />
@@ -127,9 +105,9 @@ export function App() {
   );
 }
 
-function Card({ title, aside, wide, children }: { title: string; aside?: ReactNode; wide?: boolean; children: ReactNode }) {
+function Card({ title, aside, children }: { title: string; aside?: ReactNode; children: ReactNode }) {
   return (
-    <section className={wide ? "card wide" : "card"}>
+    <section className="card">
       <div className="card-head">
         <h2>{title}</h2>
         {aside}
@@ -180,53 +158,47 @@ function SelectField<T extends string | number>({
   );
 }
 
-function StatsCard({ build, buffs, onChange }: { build: Build; buffs: Buffs; onChange: (stats: Build["stats"]) => void }) {
+function StatsTable({ build, buffs, onChange }: { build: Build; buffs: Buffs; onChange: (stats: Build["stats"]) => void }) {
   const jobBonus = jobBonusStats(getJob("Lord_Knight"), build.jobLevel);
   const buffBonus = resolveEffects(build, buffs).statBonus;
-  const validLevel = Number.isInteger(build.baseLevel) && build.baseLevel >= 1 && build.baseLevel <= MAX_BASE_LEVEL;
-  const available = validLevel ? availableStatPoints(build.baseLevel) : null;
-  const spent = spentStatPoints(build.stats);
-  const left = available === null || Number.isNaN(spent) ? null : available - spent;
   return (
-    <Card title="Atributos" aside={left !== null && <span className={left < 0 ? "badge bad" : "badge"}>{left} pontos livres</span>}>
-      <table className="stats">
-        <thead>
-          <tr>
-            <th />
-            <th>Base</th>
-            <th>Classe</th>
-            <th>Buffs</th>
-            <th>Total</th>
-            <th title="Pontos para subir 1">Custo</th>
-          </tr>
-        </thead>
-        <tbody>
-          {STAT_NAMES.map((s) => {
-            const base = build.stats[s];
-            const buff = buffBonus[s] ?? 0;
-            return (
-              <tr key={s}>
-                <th scope="row">{STAT_LABELS[s]}</th>
-                <td>
-                  <input
-                    type="number"
-                    aria-label={STAT_LABELS[s]}
-                    value={Number.isNaN(base) ? "" : base}
-                    min={BASE_STAT_MIN}
-                    max={BASE_STAT_MAX}
-                    onChange={(e) => onChange({ ...build.stats, [s]: e.target.value === "" ? Number.NaN : Number(e.target.value) })}
-                  />
-                </td>
-                <td className="num muted">+{jobBonus[s]}</td>
-                <td className="num muted">{buff ? `+${buff}` : "—"}</td>
-                <td className="num strong">{Number.isNaN(base) ? "—" : base + jobBonus[s] + buff}</td>
-                <td className="num muted">{base < BASE_STAT_MAX ? statPointCost(base) : "—"}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </Card>
+    <table className="stats">
+      <thead>
+        <tr>
+          <th />
+          <th>Base</th>
+          <th>Classe</th>
+          <th>Buffs</th>
+          <th>Total</th>
+          <th title="Pontos para subir 1">Custo</th>
+        </tr>
+      </thead>
+      <tbody>
+        {STAT_NAMES.map((s) => {
+          const base = build.stats[s];
+          const buff = buffBonus[s] ?? 0;
+          return (
+            <tr key={s}>
+              <th scope="row">{STAT_LABELS[s]}</th>
+              <td>
+                <input
+                  type="number"
+                  aria-label={STAT_LABELS[s]}
+                  value={Number.isNaN(base) ? "" : base}
+                  min={BASE_STAT_MIN}
+                  max={BASE_STAT_MAX}
+                  onChange={(e) => onChange({ ...build.stats, [s]: e.target.value === "" ? Number.NaN : Number(e.target.value) })}
+                />
+              </td>
+              <td className="num muted">+{jobBonus[s]}</td>
+              <td className="num muted">{buff ? `+${buff}` : "—"}</td>
+              <td className="num strong">{Number.isNaN(base) ? "—" : base + jobBonus[s] + buff}</td>
+              <td className="num muted">{base < BASE_STAT_MAX ? statPointCost(base) : "—"}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 }
 
@@ -272,48 +244,120 @@ function BuffsCard({ build, buffs, onChange }: { build: Build; buffs: Buffs; onC
   );
 }
 
-function SkillsCard({ build, onChange }: { build: Build; onChange: (skills: Build["skills"]) => void }) {
+type CharacterTab = "character" | "skills";
+
+/** Free status points, or null while the base level is not a valid number. */
+function freeStatPoints(build: Build): number | null {
+  const validLevel = Number.isInteger(build.baseLevel) && build.baseLevel >= 1 && build.baseLevel <= MAX_BASE_LEVEL;
+  const spent = spentStatPoints(build.stats);
+  return validLevel && !Number.isNaN(spent) ? availableStatPoints(build.baseLevel) - spent : null;
+}
+
+function CharacterCard({ build, buffs, onChange }: { build: Build; buffs: Buffs; onChange: (patch: Partial<Build>) => void }) {
+  const [tab, setTab] = useState<CharacterTab>("character");
+  const id = useId();
+  const freeStats = freeStatPoints(build);
+  const pools = SKILL_STAGES.map((stage) => ({
+    spent: spentSkillPoints(build.skills, stage),
+    available: availableSkillPoints(stage, build.jobLevel),
+  }));
+  const skillSpent = pools.reduce((n, p) => n + p.spent, 0);
+  const skillAvailable = pools.reduce((n, p) => n + p.available, 0);
+  const tabs: { id: CharacterTab; label: string; hint: string; bad?: boolean }[] = [
+    {
+      id: "character",
+      label: "Personagem",
+      hint: freeStats === null ? "—" : `${freeStats} livres`,
+      bad: freeStats !== null && freeStats < 0,
+    },
+    {
+      id: "skills",
+      label: "Habilidades",
+      hint: Number.isNaN(skillAvailable) ? `${skillSpent}` : `${skillSpent}/${skillAvailable}`,
+      bad: pools.some((p) => p.spent > p.available),
+    },
+  ];
+  const move = (delta: number) => {
+    const next = tabs[(tabs.findIndex((t) => t.id === tab) + delta + tabs.length) % tabs.length];
+    if (!next) return;
+    setTab(next.id);
+    document.getElementById(`${id}-${next.id}-tab`)?.focus();
+  };
+
   return (
-    <Card title="Habilidades" wide>
-      <p className="muted small">Subir uma habilidade aprende os pré-requisitos; baixar remove as que dependem dela.</p>
-      <div className="skill-stages">
-        {SKILL_STAGES.map((stage) => {
-          const spent = spentSkillPoints(build.skills, stage);
-          const available = availableSkillPoints(stage, build.jobLevel);
-          return (
-            <div key={stage} className="skill-stage">
-              <h3>
-                {STAGE_LABELS[stage]}
-                <span className={spent > available ? "badge bad" : "badge"}>
-                  {spent}/{Number.isNaN(available) ? "—" : available}
-                </span>
-              </h3>
-              <ul className="skills">
-                {PLANNER_SKILLS.filter((s) => s.stage === stage).map((s) => (
-                  <li key={s.name}>
-                    <span>
-                      {skillLabel(s.name)}
-                      {s.isQuest && <span className="tag">missão</span>}
-                    </span>
-                    <select
-                      aria-label={skillLabel(s.name)}
-                      value={skillLevel(build, s.name)}
-                      onChange={(e) => onChange(setSkillLevel(build.skills, s.name, Number(e.target.value)))}
-                    >
-                      {range(s.maxLevel).map((l) => (
-                        <option key={l} value={l}>
-                          {l}
-                        </option>
-                      ))}
-                    </select>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          );
-        })}
+    <section className="card wide character">
+      <div
+        className="card-tabs"
+        role="tablist"
+        aria-label="Personagem"
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight") move(1);
+          if (e.key === "ArrowLeft") move(-1);
+        }}
+      >
+        {tabs.map((t) => (
+          <button
+            key={t.id}
+            id={`${id}-${t.id}-tab`}
+            type="button"
+            role="tab"
+            aria-selected={t.id === tab}
+            aria-controls={`${id}-panel`}
+            tabIndex={t.id === tab ? 0 : -1}
+            className={t.id === tab ? "active" : ""}
+            onClick={() => setTab(t.id)}
+          >
+            {t.label}
+            <span className={t.bad ? "badge bad" : "badge"}>{t.hint}</span>
+          </button>
+        ))}
       </div>
-    </Card>
+      <div id={`${id}-panel`} role="tabpanel" aria-labelledby={`${id}-${tab}-tab`} className="card-tab-panel">
+        {tab === "character" && <CharacterPanel build={build} buffs={buffs} freeStats={freeStats} onChange={onChange} />}
+        {tab === "skills" && (
+          <>
+            <p className="muted small">Subir uma habilidade aprende os pré-requisitos; baixar remove as que dependem dela.</p>
+            <SkillTree build={build} onChange={(skills) => onChange({ skills })} />
+          </>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function CharacterPanel({
+  build,
+  buffs,
+  freeStats,
+  onChange,
+}: {
+  build: Build;
+  buffs: Buffs;
+  freeStats: number | null;
+  onChange: (patch: Partial<Build>) => void;
+}) {
+  return (
+    <div className="character-panel">
+      <div className="character-levels">
+        <NumberField label="Nível de base" value={build.baseLevel} min={1} max={MAX_BASE_LEVEL} onChange={(v) => onChange({ baseLevel: v })} />
+        <NumberField label="Nível de classe" value={build.jobLevel} min={1} max={MAX_JOB_LEVEL} onChange={(v) => onChange({ jobLevel: v })} />
+        <label className="check">
+          <input
+            type="checkbox"
+            checked={build.riding}
+            disabled={!build.riding && skillLevel(build, "KN_RIDING") === 0}
+            onChange={(e) => onChange({ riding: e.target.checked })}
+          />
+          Montado no Peco Peco
+        </label>
+        {freeStats !== null && (
+          <p className={freeStats < 0 ? "points bad" : "points"}>
+            <strong>{freeStats}</strong> {Math.abs(freeStats) === 1 ? "ponto de atributo livre" : "pontos de atributo livres"}
+          </p>
+        )}
+      </div>
+      <StatsTable build={build} buffs={buffs} onChange={(stats) => onChange({ stats })} />
+    </div>
   );
 }
 
