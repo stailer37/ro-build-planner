@@ -1,12 +1,122 @@
 {
-  "Knuckle": {
+  "Fist": {
+    "Small": 100,
+    "Medium": 100,
+    "Large": 100
+  },
+  "Dagger": {
     "Small": 100,
     "Medium": 75,
     "Large": 50
   },
-  "Whip": {
+  "1hSword": {
+    "Small": 75,
+    "Medium": 100,
+    "Large": 75
+  },
+  "2hSword": {
+    "Small": 75,
+    "Medium": 75,
+    "Large": 100
+  },
+  "1hSpear": {
+    "Small": 75,
+    "Medium": 75,
+    "Large": 100
+  },
+  "2hSpear": {
+    "Small": 75,
+    "Medium": 75,
+    "Large": 100
+  },
+  "1hAxe": {
+    "Small": 50,
+    "Medium": 75,
+    "Large": 100
+  },
+  "2hAxe": {
+    "Small": 50,
+    "Medium": 75,
+    "Large": 100
+  },
+  "Mace": {
+    "Small": 75,
+    "Medium": 100,
+    "Large": 100
+  },
+  "2hMace": {
     "Small": 100,
     "Medium": 100,
+    "Large": 100
+  },
+  "Staff": {
+    "Small": 100,
+    "Medium": 100,
+    "Large": 100
+  },
+  "Bow": {
+    "Small": 100,
+    "Medium": 100,
+    "Large": 75
+  },
+  "Musical": {
+    "Small": 75,
+    "Medium": 100,
+    "Large": 75
+  },
+  "Whip": {
+    "Small": 75,
+    "Medium": 100,
+    "Large": 50
+  },
+  "Book": {
+    "Small": 100,
+    "Medium": 100,
+    "Large": 50
+  },
+  "Katar": {
+    "Small": 75,
+    "Medium": 100,
+    "Large": 75
+  },
+  "Revolver": {
+    "Small": 100,
+    "Medium": 100,
+    "Large": 100
+  },
+  "Rifle": {
+    "Small": 100,
+    "Medium": 100,
+    "Large": 100
+  },
+  "Gatling": {
+    "Small": 100,
+    "Medium": 100,
+    "Large": 100
+  },
+  "Shotgun": {
+    "Small": 100,
+    "Medium": 100,
+    "Large": 100
+  },
+  "Grenade": {
+    "Small": 100,
+    "Medium": 100,
+    "Large": 100
+  },
+  "Huuma": {
+    "Small": 100,
+    "Medium": 100,
+    "Large": 100
+  },
+  "2hStaff": {
+    "Small": 100,
+    "Medium": 100,
+    "Large": 100
+  },
+  "Knuckle": {
+    "Small": 100,
+    "Medium": 75,
     "Large": 50
   }
 }

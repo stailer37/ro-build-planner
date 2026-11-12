@@ -29,8 +29,20 @@ describe("levelArray", () => {
 
 describe("buildSizeFix", () => {
   it("defaults omitted sizes to 100", () => {
-    const doc = { Body: [{ Weapon: "Whip", Large: 50 }] };
-    expect(buildSizeFix(doc)).toEqual({ Whip: { Small: 100, Medium: 100, Large: 50 } });
+    const base = { Body: [{ Weapon: "Fist" }, { Weapon: "Dagger", Medium: 75, Large: 50 }] };
+    expect(buildSizeFix(base, { Body: [] })).toEqual({
+      Fist: { Small: 100, Medium: 100, Large: 100 },
+      Dagger: { Small: 100, Medium: 75, Large: 50 },
+    });
+  });
+
+  it("lets the pre-renewal layer override only the sizes it lists", () => {
+    const base = { Body: [{ Weapon: "Whip", Small: 75 }] };
+    const preRe = { Body: [{ Weapon: "Whip", Large: 50 }, { Weapon: "Knuckle", Medium: 75 }] };
+    expect(buildSizeFix(base, preRe)).toEqual({
+      Whip: { Small: 75, Medium: 100, Large: 50 },
+      Knuckle: { Small: 100, Medium: 75, Large: 100 },
+    });
   });
 });
 

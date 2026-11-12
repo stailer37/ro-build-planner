@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { NO_EFFECTS, type Build } from "./build.ts";
+import { NO_EFFECTS } from "./build.ts";
 import type { JobData } from "./data.ts";
 import {
   availableStatPoints,
@@ -11,16 +11,7 @@ import {
   totalStats,
   validateStats,
 } from "./stats.ts";
-
-const build = (o: Partial<Build> = {}): Build => ({
-  baseLevel: 99,
-  jobLevel: 70,
-  stats: { Str: 1, Agi: 1, Vit: 1, Int: 1, Dex: 1, Luk: 1 },
-  skills: {},
-  weapon: { type: "2hSword" },
-  riding: false,
-  ...o,
-});
+import { build } from "./testing.ts";
 
 describe("status point cost", () => {
   it.each([

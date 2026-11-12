@@ -2,6 +2,7 @@
   "rathenaCommit": "1ca3e7700939ea40120cb51a777f8681ba5e84ae",
   "ruleset": "pre-re",
   "sourceFiles": [
+    "db/size_fix.yml",
     "db/pre-re/attr_fix.yml",
     "db/pre-re/job_aspd.yml",
     "db/pre-re/job_stats.yml",

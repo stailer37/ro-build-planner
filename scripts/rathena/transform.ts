@@ -197,15 +197,18 @@ export function buildSkills(doc: unknown, names: ReadonlySet<string>): SkillData
 
 // ---------- size_fix.yml ----------
 
-/** Damage % by weapon type and target size; rAthena omits entries equal to 100. */
-export function buildSizeFix(doc: unknown): Record<string, Record<Size, number>> {
+/**
+ * Damage % by weapon type and target size. rAthena loads db/size_fix.yml and then
+ * db/pre-re/size_fix.yml on top: an override only replaces the sizes it lists,
+ * and sizes never listed default to 100.
+ */
+export function buildSizeFix(baseDoc: unknown, overrideDoc: unknown): Record<string, Record<Size, number>> {
   const out: Record<string, Record<Size, number>> = {};
-  for (const e of body(doc)) {
-    out[e.Weapon as string] = {
-      Small: (e.Small as number | undefined) ?? 100,
-      Medium: (e.Medium as number | undefined) ?? 100,
-      Large: (e.Large as number | undefined) ?? 100,
-    };
+  for (const e of [...body(baseDoc), ...body(overrideDoc)]) {
+    const weapon = e.Weapon as string;
+    const current = out[weapon] ?? { Small: 100, Medium: 100, Large: 100 };
+    for (const size of SIZES) if (typeof e[size] === "number") current[size] = e[size];
+    out[weapon] = current;
   }
   return out;
 }
